@@ -4,14 +4,14 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 
-public class 투사체 {
+public class Missile {
 	private int x;
 	private int y;
 	private Image img;
 	private final static int OFFSET_W = 10;
 	private static final int OFFSET_H = 20;
 
-	public 투사체() {
+	public Missile() {
 		x = -500;
 		y = -500;
 
@@ -19,7 +19,7 @@ public class 투사체 {
 		img = tk.getImage("res/missile.png");
 	}
 
-	public 투사체(int x, int y) {
+	public Missile(int x, int y) {
 		this();
 		this.x = x;
 		this.y = y;
