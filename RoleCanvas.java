@@ -12,9 +12,9 @@ import java.util.List;
 
 public class RoleCanvas extends Canvas implements KeyListener, MouseListener {
 
-	private ƒ≥∏Ø≈Õ kid;
-	private πË∞Ê»≠∏È bg;
-	private List<≈ıªÁ√º> missiles;
+	private Character kid;
+	private BackGround bg;
+	private List<Missile> missiles;
 	private boolean fireSw;
 	private boolean leftPress;
 	private boolean rightPress;
@@ -28,16 +28,16 @@ public class RoleCanvas extends Canvas implements KeyListener, MouseListener {
 		rightPress = false;
 		attackPress = false;
 
-		kid = new ƒ≥∏Ø≈Õ();
-		bg = new πË∞Ê»≠∏È();
-		missiles = new ArrayList<≈ıªÁ√º>();
+		kid = new Character();
+		bg = new BackGround();
+		missiles = new ArrayList<Missile>();
 
 		new Thread(() -> {
 			while (true) {
 				try {
 					kid.update();
 					bg.update();
-					for (≈ıªÁ√º o : missiles)
+					for (Missile o : missiles)
 						o.update();
 					for (int i = 0; i < missiles.size(); i++) {
 						if (missiles.get(i) != null) {
@@ -46,7 +46,7 @@ public class RoleCanvas extends Canvas implements KeyListener, MouseListener {
 							}
 						}
 					}
-					Thread.sleep(7); // æ‡ 144«¡∑π¿”
+					Thread.sleep(7); // ÏïΩ 144ÌîÑÎ†àÏûÑ
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -68,14 +68,14 @@ public class RoleCanvas extends Canvas implements KeyListener, MouseListener {
 
 	@Override
 	public void paint(Graphics g) {
-		Image bufImage = createImage(this.getWidth(), this.getHeight()); // πˆ∆€ ¿ÃπÃ¡ˆø° ƒµπˆΩ∫∏¶ ª˝º∫
-		Graphics g2 = bufImage.getGraphics(); // g2ø° πˆ∆€ ¿ÃπÃ¡ˆ¿« ±◊∑°«»∞™¿ª ¿‘∑¬
+		Image bufImage = createImage(this.getWidth(), this.getHeight()); // Î≤ÑÌçº Ïù¥ÎØ∏ÏßÄÏóê Ï∫îÎ≤ÑÏä§Î•º ÏÉùÏÑ±
+		Graphics g2 = bufImage.getGraphics(); // g2Ïóê Î≤ÑÌçº Ïù¥ÎØ∏ÏßÄÏùò Í∑∏ÎûòÌîΩÍ∞íÏùÑ ÏûÖÎ†•
 
-		bg.draw(g2, this); // g2ø° ¿÷¥¬ πˆ∆€¿ÃπÃ¡ˆø° ±◊∏≤ (πË∞Ê)
-		for (≈ıªÁ√º o : missiles)
+		bg.draw(g2, this); // g2Ïóê ÏûàÎäî Î≤ÑÌçºÏù¥ÎØ∏ÏßÄÏóê Í∑∏Î¶º (Î∞∞Í≤Ω)
+		for (Missile o : missiles)
 			o.draw(g2, this);
-		kid.draw(g2, this); // g2ø° ¿÷¥¬ πˆ∆€¿ÃπÃ¡ˆø° ±◊∏≤
-		g.drawImage(bufImage, 0, 0, this); // ∏µÁ ∞¥√º∏¶ ¥Ÿ ±◊∏∞ πˆ∆€¿ÃπÃ¡ˆ∏¶ ƒµπˆΩ∫ø° «—π¯ø° √‚∑¬«‘
+		kid.draw(g2, this); // g2Ïóê ÏûàÎäî Î≤ÑÌçºÏù¥ÎØ∏ÏßÄÏóê Í∑∏Î¶º
+		g.drawImage(bufImage, 0, 0, this); // Î™®Îì† Í∞ùÏ≤¥Î•º Îã§ Í∑∏Î¶∞ Î≤ÑÌçºÏù¥ÎØ∏ÏßÄÎ•º Ï∫îÎ≤ÑÏä§Ïóê ÌïúÎ≤àÏóê Ï∂úÎ†•Ìï®
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class RoleCanvas extends Canvas implements KeyListener, MouseListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) { // ≈∞∏¶ ∂™Ω√ ¿€µø
+	public void keyReleased(KeyEvent e) { // ÌÇ§Î•º ÎïîÏãú ÏûëÎèô
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 		case KeyEvent.VK_A:
@@ -152,7 +152,7 @@ public class RoleCanvas extends Canvas implements KeyListener, MouseListener {
 
 	private void fire(boolean sw) {
 		if (missiles.size() < 5) {
-			≈ıªÁ√º m = kid.attack(7); // ∞˝»£æ» ∞™¿∫ ¥Ÿ¿Ω ∞¯∞›±Ó¡ˆ « ø‰«— «¡∑π¿”ºˆ
+			Missile m = kid.attack(7); // Í¥ÑÌò∏Ïïà Í∞íÏùÄ Îã§Ïùå Í≥µÍ≤©ÍπåÏßÄ ÌïÑÏöîÌïú ÌîÑÎ†àÏûÑÏàò
 			if (m != null) {
 				missiles.add(m);
 				fireSw = true;
