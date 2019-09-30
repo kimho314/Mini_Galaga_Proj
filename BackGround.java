@@ -4,13 +4,13 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 
-public class 배경화면 {
+public class BackGround {
 	private int x;
 	private int y;
 
 	private Image img;
 
-	public 배경화면() {
+	public BackGround() {
 		x = 0;
 		y = 0;
 
