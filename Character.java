@@ -5,7 +5,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
-public class Ä³¸¯ÅÍ {
+public class Character {
 	private int x;
 	private int y;
 
@@ -17,11 +17,11 @@ public class Ä³¸¯ÅÍ {
 	private int imgDelayCount;
 
 	private final static int OFFSET_W = 32;
-	private static final int OFFSET_H = 32; // final static µÎ°³ÀÇ ¼ø¼­°¡ °ü°è¾øÀ½
+	private static final int OFFSET_H = 32; // final static ë‘ê°œì˜ ìˆœì„œê°€ ê´€ê³„ì—†ìŒ
 
 	private int attackSpeed;
 
-	public Ä³¸¯ÅÍ() {
+	public Character() {
 		x = 400;
 		y = 450;
 
@@ -88,9 +88,9 @@ public class Ä³¸¯ÅÍ {
 		return y;
 	}
 
-	public Åõ»çÃ¼ attack(int attackSpeed) {
+	public Missile attack(int attackSpeed) {
 		if (this.attackSpeed == 0) {
-			Åõ»çÃ¼ m = new Åõ»çÃ¼(x, y - 10);
+			Missile m = new Missile(x, y - 10);
 			this.attackSpeed = attackSpeed;
 			return m;
 		}
