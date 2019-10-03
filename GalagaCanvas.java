@@ -25,6 +25,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 	private Title title; // 메인화면
 	private Difficulty difficulty; // 난이도 설정창
+	private ScoreDisplay scDisp;
 
 	int btxMove1;
 	int btxMove2;
@@ -53,6 +54,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		missiles = new ArrayList<Missile>();
 		title = new Title();
 		difficulty = new Difficulty();
+		scDisp = new ScoreDisplay();
 
 		kidTimer = 0;
 
@@ -67,6 +69,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 				try {
 					kid.update(); // 캐릭터 업데이트
 					bg.update(); // 배경화면 업데이트 (필요없을시 지울예정)
+					scDisp.update();
 
 					if (btxMove1 != 0) {
 						title.update();
@@ -88,16 +91,17 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 								if (missiles.get(i).getY() < 100) {
 									missiles.remove(i);
-								} else {
-									// isCrush(missiles.get(i)); // su - 해당 미사일의 충돌여부 확인
+								}
+								else {
 									if (egsCnt > 0) {
 										for (int j = 0; j < egs.length; j++) {
 											if (egs[j] != null) {
 												boolean retCrush = egs[j].isCrush(missiles.get(i));
 
 												if (retCrush) {
-													System.out.println("Hit!!!");
+													//System.out.println("Hit!!!");
 													missiles.remove(i);
+													scDisp.scoreUp(this.score);
 												}
 											}
 										}
@@ -153,40 +157,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		}).start();
 	}
 
-//	// su
-//	public void isCrush(Missile o) { // 각 미사일마다 체크할거라 매개변수 미사일 넣어줌
-//		int mx = o.getX() / 40;// 미사일의 x좌표를 40으로 나누어, 현재 미사일이 있는 칸 수
-//		int my = o.getY();// 미사일의 y중심좌표에서 절반 20을 빼줘서 이미지 좌표 끝으로 y값 설정
-//
-//		for (int i = 0; i < egs.length; i++) { // 해당 미사일의 좌표랑 비교할 블럭 그룹들 갯수대로 실행
-//			if (egs[i] != null) {
-//				if (my == egs[i].getGy() + 20) { // y좌표값과 해당 블럭 그룹의 y표를 비교해서 같으면 아래실행
-//
-//					// egX는 블럭 그룹안에 있는 첫번째 블럭의 x좌표로 이 블럭그룹이 몇칸 밀려있는지 저장
-//
-//					int egX = egs[i].getEnemyGroup().get(0).getX() / 40;
-//
-//					// enemyHp는 블럭그룹안에서 index가 x + egX인 블럭의 hp값을 가져온다
-//					/*
-//					 * (0번부터시작) 만약에 미사일의 x좌표가 45 라고 하면 40으로 나눴을때 1 첫번째 칸에 있다고 생각.(이때 x : 1) 블럭이
-//					 * 4개짜리인 블럭그룹이 이미 왼쪽으로 한칸(0)이동 된 상태라면 (생각해보면 블럭그룹의 0번째 블럭의 체력이 깎여야함) 이 블럭 그룹의
-//					 * 0번째 블럭 x좌표가 40일거고 이것을 40으로 나누면 1이니까 egX 는 1이 됨. x칸에 있는 블럭의 순서 egsIndex를 구하려면
-//					 * x-egX를 해주면된다 case 1 x-egX > 0 크러쉬~ egsIndex = x-egX case 2 x=egX >> 크러쉬~
-//					 * egsIndex = 0 case 3 x-egX < 0 크러쉬 아님
-//					 */
-//					int egsIndex = mx - egX;
-//
-//					if (egsIndex >= 0 && egsIndex < egs[i].getEnemyGroup().size()) {
-//						int enemyHp = egs[i].getEnemyGroup().get(egsIndex).getHp();
-//						int enemyHpSum = enemyHp - o.getAtk();
-//						egs[i].getEnemyGroup().get(egsIndex).setHp(enemyHpSum);
-//					}
-//
-//				}
-//			}
-//
-//		}
-//	}
+
 
 	@Override
 	public void update(Graphics g) {
@@ -201,8 +172,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			if (leftPress != true & rightPress == true) {
 				kid.move(Direction.RIGHT);
 			}
-//			if (attackPress == true)
-//				fire(attackPress);
+			
 			kidTimer = 15;
 		}
 	}
@@ -215,10 +185,12 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		bg.draw(g2, this); // g2에 있는 버퍼이미지에 그림 (배경)
 		title.draw(g2, this);
 		difficulty.draw(g2, this);
+	
 
 		if (windowsIndex == 2) {
 			kid.draw(g2, this); // g2에 있는 버퍼이미지에 그림
-
+			scDisp.draw(g2, this);
+			
 			for (Missile o : missiles) {
 				o.draw(g2, this);
 			}
@@ -325,7 +297,6 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			}
 
 			if (windowsIndex == 2) { // 공격버튼
-//				kid.attack(Direction.SELECT);
 				Missile m = kid.attack();
 				if (m != null) {
 					missiles.add(m);
@@ -356,23 +327,13 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-	}
+	public void keyTyped(KeyEvent e) {}
 
-	/*
-	 * 공격 함수는 새로 만들어야됨
-	 * 
-	 * // private void fire(boolean sw) { // if (missiles.size() <
-	 * difficulty.getMissileStack()) { // Missile m = kid.attack(5); // 괄호안 값은 다음
-	 * 공격까지 필요한 프레임수 // if (m != null) { // missiles.add(m); // } // } // }
-	 * 
-	 */
+	
 
 	private void gameStart() {
 		windowsIndex = 2;
 		score = 2 * difficulty.scoreMagnification(); // 게임 시작시 난이도에서 설정한 값만큼 스코어 배율을 조절함
 	}
 
-	private void scoreUp() { // 미구현
-	}
 }

@@ -62,20 +62,6 @@ public class EnemyGroup {
 		brokenRemove();
 		brokenUpdate();
 		
-//		if (enemies.size() > 1) { // 배열에 2개이상인 경우에만 재정렬하도록 함
-//			arrInit(); // 배열대로 다시 x좌표 재정렬
-//		} 
-//		else if (enemies.size() == 1) {// 배열에 블럭이 1개인 경우 따로 처리
-//
-//			if (enemies.get(0).getHp() <= 0) {
-//				enemies.get(0).setBroken(true);// 해당 블럭이 hp가 0일때 broke값으로 true 저장
-//
-//				// broken true로 블럭에서 애니 실행 후 값이 brokenrm값이 바뀐 후 remove실행
-//				if (enemies.get(0).getBrokenrm())
-//					enemies.remove(0);
-//			} 
-//		}
-		
 		move();
 
 	}
@@ -106,25 +92,6 @@ public class EnemyGroup {
 		return ret;
 	}
 
-//	public void arrInit() { // 배열의 x좌표 재배열 과 블럭 체력 체크 함수
-//		for (int i = 0; i < enemies.size(); i++) {
-//			if (enemies.get(i).getHp() <= 0) {
-//
-//				// 블럭배열중 하나의 체력(hp)값을 가져와서 0보다 작거나 같으면 블럭의 broken값 true로 설정
-//				enemies.get(i).setBroken(true);
-//
-//				if (enemies.get(i).getBrokenrm()) {
-//					// broken 애니 후에 블럭의 brokenrm 값이 true인 경우 배열 제거
-//					enemies.remove(i);
-//
-//					for (int j = i + 1; j < enemies.size(); j++) {
-//						// 제거된 배열 index부터 차례로 x좌표 한칸(40) 당기기
-//						enemies.get(j).setX(enemies.get(j).getX() - 40);
-//					}
-//				}
-//			}
-//		}
-//	}
 	
 	public void brokenCheck()
 	{
@@ -155,12 +122,6 @@ public class EnemyGroup {
 				Enemy e = enemies.get(i);
 				if (e.getHp() <= 0) {
 					e.setBroken(true);
-//					enemies.remove(i);
-//
-//					for (int j = i + 1; j < enemies.size(); j++) {
-//						// 제거된 배열 index부터 차례로 x좌표 한칸(40) 당기기
-//						enemies.get(j).setX(enemies.get(j).getX() - 40);
-//					}
 				}
 			}
 		}

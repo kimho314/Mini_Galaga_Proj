@@ -9,10 +9,11 @@ public class GameFrame extends Frame {
 	public GameFrame() {
 		setBounds(0, 0, 496, 838);
 		addWindowListener(new GameWindowListener());
+		
 		canvas = new GalagaCanvas();
-		add(canvas);
 		canvas.setFocusable(true);
 		canvas.requestFocus();
+		add(canvas);
 		setVisible(true);
 	}
 }
