@@ -1,4 +1,4 @@
-package bomb;
+package mini_galaga;
 
 import java.awt.Frame;
 

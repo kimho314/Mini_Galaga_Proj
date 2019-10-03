@@ -1,83 +1,116 @@
-package bomb;
+package mini_galaga;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
 
 public class Character {
-	private int x;
-	private int y;
+	private int x; // Ä³¸¯ÅÍÀÇ xÁÂÇ¥
+	private int y; // Ä³¸¯ÅÍÀÇ yÁÂÇ¥
+	private int w; // Ä³¸¯ÅÍ °¡·Î±æÀÌ
+	private int h; // Ä³¸¯ÅÍ ¼¼·Î±æÀÌ 
+	
+	private int hpx; // ÇÏÆ® xÁÂÇ¥
+	private int hpy; // ÇÏÆ® yÁÂÇ¥
+	private int hpw; // ÇÏÆ®ÀÌ¹ÌÁö °¡·Î±æÀÌ
+	private int hph; // ÇÏÆ®ÀÌ¹ÌÁö ¼¼·Î±æÀÌ 
+	private int hpI; // ÇÏÆ®ÀÌ¹ÌÁö »çÀÌ °£°İ 
+	private int maxHp;
+	
+	private int vx; // Ä³¸¯ÅÍ ÇÑÄ­ ÀÌµ¿°ª
 
-	private int w;
-	private int h;
-
-	private Image img;
-	private int imgIndex;
-	private int imgDelayCount;
-
-	private final static int OFFSET_W = 32;
-	private static final int OFFSET_H = 32; // final static ë‘ê°œì˜ ìˆœì„œê°€ ê´€ê³„ì—†ìŒ
-
-	private int attackSpeed;
+	private Image img; // Ä³¸¯ÅÍ ÀÌ¹ÌÁö
+	private Image hpImg; // ÇÏÆ® ÀÌ¹ÌÁö
+	private int imgIndex; // Ä³¸¯ÅÍÀÎµ¦½º 
+	private int attackSpeed=0;
 
 	public Character() {
-		x = 400;
-		y = 450;
-
-		w = h = 64;
-
-		imgDelayCount = 0;
+		x = 496/2;
+		y = 720;
+		w = 40;
+		h = 36;
+		
+		hpx = 43;
+		hpy = 60;
+		hpw = 48;
+		hph = 36;
+		maxHp = Difficulty.healthPoint;		
+		hpI = 5;
+		
 		attackSpeed = 0;
-
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		img = tk.getImage("res/fighter.png");
 		imgIndex = 3;
+		
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		img = tk.getImage("res/man.png");
+		hpImg = tk.getImage("res/heart.png");
+	}
+	
+	public void minusMaxHp()
+	{
+		this.maxHp--;
+		if(this.maxHp < 0)
+		{
+			this.maxHp = 0;
+		}
+	}
+	
+	public int getMaxHp()
+	{
+		return maxHp;
+	}
+	
+	public int imgIndex() {
+		imgIndex = 4;
+		return imgIndex;
 	}
 
 	public void update() {
 		if (attackSpeed > 0)
+		{
 			attackSpeed--;
+		}
+		x += vx;
 	}
 
-	public void draw(Graphics g, RoleCanvas roleCanvas) {
+	public void draw(Graphics g, GalagaCanvas galagaCanvas) { 
 		int sx = imgIndex * w;
-		g.drawImage(img, x - OFFSET_W, y - OFFSET_H, x + w - OFFSET_W, y + h - OFFSET_H, sx, 0, sx + w, h, roleCanvas);
+		//maxHp = Difficulty.healthPoint; // ÇÏÆ®°³¼ö ¹Ş¾Æ¿À±â 
+		
+		g.drawImage(img, x - 5 , y, x + w - 5, y + h, sx, 0, sx + w, h, galagaCanvas); // Ä³¸¯ÅÍÀÌ¹ÌÁö ¼³Á¤	
+		
+		for(int i=0; i<maxHp; i++)
+		{
+			g.drawImage(hpImg, hpI+hpx*i, hpy, hpI+hpx*(i+1), hpy+hph, 0, 0, hpw, hph, galagaCanvas); // ÇÏÆ®ÀÌ¹ÌÁö ¼³Á¤ 
+		}
 	}
 
 	public void move(Direction direction) {
 		switch (direction) {
-		case LEFT:
-			if (x > 20) {
-				if (imgDelayCount < 0)
-					imgDelayCount = 1;
-				if (imgIndex > 0 & ++imgDelayCount >= 5) {
-					imgIndex--;
-					imgDelayCount = 0;
-				}
-				x -= 3;
-			} else {
-				x = 16;
-			}
-			break;
-		case RIGHT:
-			if (x < 770) {
-				if (imgDelayCount > 0)
-					imgDelayCount = -1;
-				if (imgIndex < 6 & --imgDelayCount <= -5) {
-					imgIndex++;
-					imgDelayCount = 0;
-				}
-				x += 3;
-			} else {
-				x = 770;
-			}
-			break;
+	      case LEFT:
+	         if (imgIndex == 0) {
+	            imgIndex = 1;
+	         }else {
+	            imgIndex = 0;
+	         }
+	         x -= 40; // °¡·Î ÇÑÄ­¾¿ ÀÌµ¿
+	         if (x < 0) // È­¸é ÇÁ·¹ÀÓ ¾Æ¿ô¹æÁö
+	            x = 0;
+	         break;
 
-		default:
-			break;
-		}
-
+	      case RIGHT:
+	         if (imgIndex == 7) {
+	            imgIndex = 8;
+	         }else {
+	            imgIndex = 7;
+	         }
+	         x += 40;
+	         if (x > 450)
+	            x = 450;
+	         break;
+	      case SELECT:
+	         imgIndex = 4;
+	         break;
+	      }
 	}
 
 	public int getX() {
@@ -88,12 +121,8 @@ public class Character {
 		return y;
 	}
 
-	public Missile attack(int attackSpeed) {
-		if (this.attackSpeed == 0) {
-			Missile m = new Missile(x, y - 10);
-			this.attackSpeed = attackSpeed;
+	public Missile attack() {
+			Missile m = new Missile(x, y); 
 			return m;
-		}
-		return null;
 	}
 }

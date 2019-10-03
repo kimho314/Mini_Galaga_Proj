@@ -1,4 +1,4 @@
-package bomb;
+package mini_galaga;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -15,21 +15,16 @@ public class BackGround {
 		y = 0;
 
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		img = tk.getImage("res/test.png");
+		img = tk.getImage("res/bg.jpg");
 	}
 
-	public void draw(Graphics g, RoleCanvas roleCanvas) {
+	public void draw(Graphics g, GalagaCanvas roleCanvas) {
 		g.drawImage(img, x, y, roleCanvas);
-//		g.drawImage(img, x, y - 800, roleCanvas);
-//		g.drawImage(img, x + 480, y, roleCanvas);
-//		g.drawImage(img, x + 480, y - 800, roleCanvas);
+
 	}
 
 	public void update() {
-//		y += 1;
-//
-//		if (y >= 799) {
-//			y = 0;
-//		}
+		
 	}
+
 }
