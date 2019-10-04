@@ -36,10 +36,11 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 	private int kidTimer;
 
-	private EnemyGroup[] egs;// su - 블럭 적군들 블럭그룹 배열
-	private int egsCnt;// su - egs 배열 index 카운트
-	private int egsTimer;// su - 적군생성 타이머
-	private int egsUpdateTimer;// su - 블럭 그룹 업데이트 타이머
+	private EnemyGroup[] egs; // su - 블럭 적군들 블럭그룹 배열
+	private int egsCnt; // su - egs 배열 index 카운트
+	private int egsTimer; // su - 적군생성 타이머
+	private int egsUpdateTimer; // su - 블럭 그룹 업데이트 타이머
+	private int ebTimer; // egs broken timer
 
 	public GalagaCanvas() {
 		addMouseListener(this);
@@ -114,7 +115,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 							for (int i = 0; i < egs.length; i++) {
 
 								if (egs[i] != null) {
-									egs[i].update();
+									egs[i].moveUpdate();
 
 									if (egs[i].getGy() >= 680) {
 										// y값 바닥에 닿을 때 null 값 주기
@@ -126,6 +127,16 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 							}
 
 							egsUpdateTimer = 100;
+						}
+						
+						if (ebTimer == 0) {
+							for (int i = 0; i < egs.length; i++) {
+								if (egs[i] != null) {
+									egs[i].brokenUpdate();
+								}
+							}
+							
+							ebTimer = 10;
 						}
 
 						// su - egsTimer타이머 설정대로 블럭그룹 생성
@@ -148,6 +159,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 						egsUpdateTimer--;
 						egsTimer--;
 						kidTimer--;
+						ebTimer--;
 
 					} // windowsIndex ==2 end
 					else if (windowsIndex == 3) {
@@ -180,6 +192,8 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 		egsTimer = 0; // su - 타이머 초기화
 		egsUpdateTimer = 0;// su - 타이머 초기화
+		ebTimer = 0;
+		
 	}
 
 	@Override

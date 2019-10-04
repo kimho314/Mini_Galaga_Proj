@@ -55,17 +55,16 @@ public class EnemyGroup {
 		}
 	}
 
-	public void update() { // 매 프레임당 업데이트 호출
-
-		// 항상 블럭에 broken 인자가 true인지 확인 true이면 폭발액션
-		brokenCheck();		
-		brokenRemove();
-		brokenUpdate();
-		
+	public void moveUpdate() { // 매 프레임당 업데이트 호출		
 		move();
-
 	}
-
+	
+	
+	public void brokenUpdate() {
+		brokenCheck();
+		brokenRemove();
+	}
+	
 
 	public boolean isCrush(Missile o) {
 		
@@ -99,7 +98,13 @@ public class EnemyGroup {
 	
 	public void brokenCheck()
 	{
-		for (Enemy e : enemies) {
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy e = enemies.get(i);
+			
+			if (e.getHp() <= 0) {
+				e.setBroken(true);
+			}
+			
 			e.isBroken();
 		}
 	}
@@ -120,16 +125,6 @@ public class EnemyGroup {
 		}
 	}
 	
-	public void brokenUpdate() {
-		if (enemies.size() > 0) {
-			for (int i = 0; i < enemies.size(); i++) {
-				Enemy e = enemies.get(i);
-				if (e.getHp() <= 0) {
-					e.setBroken(true);
-				}
-			}
-		}
-	}
 	
 	
 	public void move() {
