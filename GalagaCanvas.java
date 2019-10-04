@@ -14,6 +14,10 @@ import java.util.List;
 public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 	private Character kid; // 캐릭터를 불러옴
+	private int kidTimer;
+	private boolean kidInitFlag;
+	private int kidBulletTimer;
+	
 	private BackGround bg; // 배경화면을 불러옴
 	private List<Missile> missiles; // 총알값을 불러옴 (배열)
 
@@ -34,13 +38,16 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 	int btxMove1;
 	int btxMove2;
 
-	private int kidTimer;
 
 	private EnemyGroup[] egs; // su - 블럭 적군들 블럭그룹 배열
 	private int egsCnt; // su - egs 배열 index 카운트
 	private int egsTimer; // su - 적군생성 타이머
 	private int egsUpdateTimer; // su - 블럭 그룹 업데이트 타이머
 	private int ebTimer; // egs broken timer
+	
+	
+	private static final int maxKidBulletTimer = 200;	
+
 
 	public GalagaCanvas() {
 		addMouseListener(this);
@@ -48,6 +55,9 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 		leftPress = false;
 		rightPress = false;
+		
+		kidInitFlag = false;
+		kidBulletTimer = maxKidBulletTimer;
 
 		windowsIndex = 0;
 		scoreTotal = 0;
@@ -77,9 +87,24 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 					if (windowsIndex == 2) { // 게임 시작시 작동
 						
+						/*
+						 * 게임 시작 후 캐릭터에 
+						 * 최대 체력과 최대 총알 개수를
+						 * 전달해 준다
+						 */
+						if(!kidInitFlag)
+						{
+							kid.setMaxHp(Difficulty.healthPoint);
+							kid.setBulletNum(Difficulty.missileStack);
+							kidInitFlag = true;
+						}
+						
 						for(Missile m : missiles)
 						{
-							m.update();
+							if(m != null)
+							{
+								m.update();
+							}
 						}
 						
 						
@@ -97,7 +122,6 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 												retCrush = egs[j].isCrush(missiles.get(i));
 
 												if (retCrush) {
-													// System.out.println("egs : " + j + " bullet : " + i + " Hit!!!");
 													missiles.remove(i);
 													scDisp.scoreUp(this.score);
 													break; // 미사일이 삭제되면 바로 egs가 있는 for문을 빠져 나가도록 해야함
@@ -129,7 +153,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 							egsUpdateTimer = 100;
 						}
 						
-						if (ebTimer == 0) {
+						if (ebTimer == 0) { // 70ms
 							for (int i = 0; i < egs.length; i++) {
 								if (egs[i] != null) {
 									egs[i].brokenUpdate();
@@ -149,7 +173,8 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 							}
 							egsTimer = 2000;
 						}
-
+						
+						// HP가 0이 되면 종료 시퀀스 시작
 						if (kid.getHp() <= 0) {
 							windowsIndex = 3;
 							ecTimer = 100;
@@ -160,18 +185,33 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 						egsTimer--;
 						kidTimer--;
 						ebTimer--;
+						
+						kidBulletTimer--;
+						/*
+						 * bullet timer가 0이 되면 실제 남은 총알 갯수와 상관없이
+						 * 총알 개수 0개로 초기화
+						 * 그리고 총알 reload한다
+						 */
+						if(kidBulletTimer <= 0)
+						{
+							kid.setBulletNum(0);
+							System.out.println("Reload!!!");
+							kid.reloadBullet();
+							kidBulletTimer = maxKidBulletTimer;
+
+						}
 
 					} // windowsIndex ==2 end
 					else if (windowsIndex == 3) {
 						ecTimer--;
-					} else {
-					}
+					} else {}
 
 					Thread.sleep(7); // 약 144프레임
 
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				
 				repaint();
 			}
 		}).start();
@@ -245,31 +285,25 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			}
 		} else if (windowsIndex == 3) {
 			endController.draw(g2, this);
-		} else {
-		}
+		} else {}
 
 		g.drawImage(bufImage, 0, 0, this); // 모든 객체를 다 그린 버퍼이미지를 캔버스에 한번에 출력함
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-	}
+	public void mouseExited(MouseEvent e) {}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -346,19 +380,29 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			}
 
 			if (windowsIndex == 2) { // 공격버튼
-				Missile m = kid.attack();
-				if (m != null) {
+				System.out.println("bullet : " + kid.getBulletNum() + " bullet timer : " + kidBulletTimer);
+				
+				// missile발사 후 캐릭터가 가지고 있는 총알 갯수 하나 차감
+				if ((kid.getBulletNum()) > 0 && (kid.getBulletNum() <= Difficulty.missileStack)
+						&& (kidBulletTimer > 0)) {
+					Missile m = kid.attack();
 					missiles.add(m);
+					
+					kid.minusBulletNum();
 				}
+				
+				
 				kid.move(Direction.SELECT);
 			}
 
 			if (windowsIndex == 3) {
 				int endSel = endController.getEndSel();
+				
 				if (endSel == 0) {
 					// restart
 					windowsIndex = 2;
 					init();
+					kidInitFlag = false;
 				} else if (endSel == 1) {
 					System.exit(0);
 				} else {
@@ -389,8 +433,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	private void gameStart() {
 		windowsIndex = 2;

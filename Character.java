@@ -22,8 +22,10 @@ public class Character {
 	private Image img; // 캐릭터 이미지
 	private Image hpImg; // 하트 이미지
 	private int imgIndex; // 캐릭터인덱스 
-	private int attackSpeed=0;
-
+	
+	private int attackSpeed;
+	private int bulletNum;
+	
 	public Character() {
 		x = 496/2;
 		y = 720;
@@ -34,15 +36,40 @@ public class Character {
 		hpy = 60;
 		hpw = 48;
 		hph = 36;
-		maxHp = Difficulty.healthPoint;		
+		maxHp = 0;		
 		hpI = 5;
 		
 		attackSpeed = 0;
+		bulletNum = 0;
 		imgIndex = 3;
 		
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		img = tk.getImage("res/man.png");
 		hpImg = tk.getImage("res/heart.png");
+	}
+	
+	public void setBulletNum(int bulletNum)
+	{
+		this.bulletNum = bulletNum;
+	}
+	
+	public int getBulletNum()
+	{
+		return this.bulletNum;
+	}
+	
+	public void minusBulletNum()
+	{
+		this.bulletNum--;
+		if(this.bulletNum <= 0)
+		{
+			this.bulletNum = 0;
+		}
+	}
+	
+	public void reloadBullet()
+	{
+		this.bulletNum = Difficulty.missileStack;
 	}
 	
 	public void minusMaxHp()
@@ -52,6 +79,11 @@ public class Character {
 		{
 			this.maxHp = 0;
 		}
+	}
+	
+	public void setMaxHp(int hp)
+	{
+		this.maxHp = hp;
 	}
 	
 	public int getHp()
@@ -74,10 +106,8 @@ public class Character {
 
 	public void draw(Graphics g, GalagaCanvas galagaCanvas) { 
 		int sx = imgIndex * w;
-		maxHp = Difficulty.healthPoint; // 하트개수 받아오기 
 		
-		g.drawImage(img, x - 5 , y, x + w - 5, y + h, sx, 0, sx + w, h, galagaCanvas); // 캐릭터이미지 설정	
-		
+		g.drawImage(img, x - 5 , y, x + w - 5, y + h, sx, 0, sx + w, h, galagaCanvas); // 캐릭터이미지 설정			
 		for(int i=0; i<maxHp; i++)
 		{
 			g.drawImage(hpImg, hpI+hpx*i, hpy, hpI+hpx*(i+1), hpy+hph, 0, 0, hpw, hph, galagaCanvas); // 하트이미지 설정 
@@ -125,7 +155,7 @@ public class Character {
 	}
 
 	public Missile attack() {
-			Missile m = new Missile(x, y); 
-			return m;
+		Missile m = new Missile(x, y);
+		return m;
 	}
 }
