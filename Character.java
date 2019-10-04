@@ -48,13 +48,13 @@ public class Character {
 	public void minusMaxHp()
 	{
 		this.maxHp--;
-		if(this.maxHp < 0)
+		if(this.maxHp <= 0)
 		{
 			this.maxHp = 0;
 		}
 	}
 	
-	public int getMaxHp()
+	public int getHp()
 	{
 		return maxHp;
 	}
@@ -74,7 +74,7 @@ public class Character {
 
 	public void draw(Graphics g, GalagaCanvas galagaCanvas) { 
 		int sx = imgIndex * w;
-		//maxHp = Difficulty.healthPoint; // 하트개수 받아오기 
+		maxHp = Difficulty.healthPoint; // 하트개수 받아오기 
 		
 		g.drawImage(img, x - 5 , y, x + w - 5, y + h, sx, 0, sx + w, h, galagaCanvas); // 캐릭터이미지 설정	
 		
@@ -92,6 +92,7 @@ public class Character {
 	         }else {
 	            imgIndex = 0;
 	         }
+	         
 	         x -= 40; // 가로 한칸씩 이동
 	         if (x < 0) // 화면 프레임 아웃방지
 	            x = 0;
@@ -103,10 +104,12 @@ public class Character {
 	         }else {
 	            imgIndex = 7;
 	         }
+	         
 	         x += 40;
 	         if (x > 450)
 	            x = 450;
 	         break;
+	         
 	      case SELECT:
 	         imgIndex = 4;
 	         break;

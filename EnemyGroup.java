@@ -68,19 +68,23 @@ public class EnemyGroup {
 
 
 	public boolean isCrush(Missile o) {
-		int mx = o.getX() / 40;// 미사일의 x좌표를 40으로 나누어, 현재 미사일이 있는 칸 수
-		int my = o.getY();// 미사일의 y중심좌표에서 절반 20을 빼줘서 이미지 좌표 끝으로 y값 설정
+		
 		boolean ret = false;
 
-		if (!enemies.isEmpty()) {
+		if ((!enemies.isEmpty()) && (o != null)) {
+			
+			int mx = o.getX() / 40;// 미사일의 x좌표를 40으로 나누어, 현재 미사일이 있는 칸 수
+			int my = o.getY();
+			
 			for (int i = 0; i < enemies.size(); i++) {
-				if (my == this.gy + 40) {
+				if ((my <= this.gy + 40) && (my >= this.gy)) {
 					int egX = enemies.get(0).getX() / 40;
 					int egsIndex = mx - egX;
 
 					if (egsIndex >= 0 && egsIndex < enemies.size()) {
 						int enemyHp = enemies.get(egsIndex).getHp();
 						int enemyHpSum = enemyHp - o.getAtk();
+						
 						enemies.get(egsIndex).setHp(enemyHpSum);
 						ret = true;
 						break;

@@ -8,23 +8,24 @@ public class BackGround {
 	private int x;
 	private int y;
 
-	private Image img;
+	private Image bgImg;
+
 
 	public BackGround() {
 		x = 0;
 		y = 0;
-
+		
 		Toolkit tk = Toolkit.getDefaultToolkit();
-		img = tk.getImage("res/bg.jpg");
-	}
+		bgImg = tk.getImage("res/bg.jpg");
 
+	}	
+
+	
 	public void draw(Graphics g, GalagaCanvas roleCanvas) {
-		g.drawImage(img, x, y, roleCanvas);
-
-	}
-
-	public void update() {
+		g.drawImage(bgImg, x, y, roleCanvas);
 		
 	}
+
+	
 
 }

@@ -5,9 +5,11 @@ import java.awt.Toolkit;
 
 public class Title {
 	private int hIndex; // 어떤 버튼을 선택중인지 확인할 변수
-	private Toolkit tk;
+	
 	private int btnX; // 이미지의 기본 x값
 	private int btnY; // 이미지의 기본 y값
+	
+	private Toolkit tk;
 	private Image start; // 게임시작 버튼
 	private Image exit; // 게임종료 버튼
 	private Image arrow; // 버튼 옆에 무엇을 선택했는지 알려주는 화살표

@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
@@ -26,6 +27,9 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 	private Title title; // 메인화면
 	private Difficulty difficulty; // 난이도 설정창
 	private ScoreDisplay scDisp;
+
+	private EndingController endController;
+	private int ecTimer;
 
 	int btxMove1;
 	int btxMove2;
@@ -49,27 +53,17 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		btxMove1 = 0;
 		btxMove2 = 0;
 
-		kid = new Character();
 		bg = new BackGround();
-		missiles = new ArrayList<Missile>();
 		title = new Title();
 		difficulty = new Difficulty();
-		scDisp = new ScoreDisplay();
 
-		kidTimer = 0;
-
-		egsTimer = 0; // su - 타이머 초기화
-		egsUpdateTimer = 0;// su - 타이머 초기화
-
-		egsCnt = 0; // su - 배열카운트 초기화
-		egs = new EnemyGroup[10]; // su - EnemyGroup 배열
+		init();
 
 		new Thread(() -> { // 서브 쓰레드
 			while (true) {
 				try {
 					kid.update(); // 캐릭터 업데이트
-					bg.update(); // 배경화면 업데이트 (필요없을시 지울예정)
-					scDisp.update();
+					scDisp.update(); // score 표시
 
 					if (btxMove1 != 0) {
 						title.update();
@@ -82,24 +76,27 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 					if (windowsIndex == 2) { // 게임 시작시 작동
 
-						for (Missile o : missiles) {
-							o.update();
-						}
-
+						
 						for (int i = 0; i < missiles.size(); i++) {
 							if (missiles.get(i) != null) {
 
+								missiles.get(i).update();
+
 								if (missiles.get(i).getY() < 100) {
 									missiles.remove(i);
-								}
-								else {
+								} else {
 									if (egsCnt > 0) {
 										for (int j = 0; j < egs.length; j++) {
 											if (egs[j] != null) {
-												boolean retCrush = egs[j].isCrush(missiles.get(i));
+												boolean retCrush = false;
+												
+												if(!missiles.isEmpty())
+												{
+													retCrush = egs[j].isCrush(missiles.get(i));
+												}
 
 												if (retCrush) {
-													//System.out.println("Hit!!!");
+													System.out.println("egs : " + j + " bullet : " + i + " Hit!!!");
 													missiles.remove(i);
 													scDisp.scoreUp(this.score);
 												}
@@ -141,14 +138,24 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 							egsTimer = 2000;
 						}
 
-						// timer variables
+						if (kid.getHp() <= 0) {
+							windowsIndex = 3;
+							ecTimer = 100;
+						}
+
+						// update timer variables
 						egsUpdateTimer--;
 						egsTimer--;
 						kidTimer--;
 
 					} // windowsIndex ==2 end
+					else if (windowsIndex == 3) {
+						ecTimer--;
+					} else {
+					}
 
 					Thread.sleep(7); // 약 144프레임
+
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -157,7 +164,22 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		}).start();
 	}
 
+	private void init() {
+		kid = new Character();
+		kidTimer = 0;
 
+		missiles = Collections.synchronizedList(new ArrayList<Missile>());
+		scDisp = new ScoreDisplay();
+
+		endController = new EndingController();
+		ecTimer = 0;
+
+		egs = new EnemyGroup[10]; // su - EnemyGroup 배열
+		egsCnt = 0; // su - 배열카운트 초기화
+
+		egsTimer = 0; // su - 타이머 초기화
+		egsUpdateTimer = 0;// su - 타이머 초기화
+	}
 
 	@Override
 	public void update(Graphics g) {
@@ -172,8 +194,15 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			if (leftPress != true & rightPress == true) {
 				kid.move(Direction.RIGHT);
 			}
-			
+
 			kidTimer = 15;
+		}
+
+		if (windowsIndex == 3) {
+			if (ecTimer <= 0) {
+				ecTimer = 0;
+				endController.setRestartFlag(true);
+			}
 		}
 	}
 
@@ -185,12 +214,11 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		bg.draw(g2, this); // g2에 있는 버퍼이미지에 그림 (배경)
 		title.draw(g2, this);
 		difficulty.draw(g2, this);
-	
 
 		if (windowsIndex == 2) {
 			kid.draw(g2, this); // g2에 있는 버퍼이미지에 그림
 			scDisp.draw(g2, this);
-			
+
 			for (Missile o : missiles) {
 				o.draw(g2, this);
 			}
@@ -200,6 +228,9 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 					egs[i].draw(g2, this);
 				}
 			}
+		} else if (windowsIndex == 3) {
+			endController.draw(g2, this);
+		} else {
 		}
 
 		g.drawImage(bufImage, 0, 0, this); // 모든 객체를 다 그린 버퍼이미지를 캔버스에 한번에 출력함
@@ -228,9 +259,6 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 
-		// System.out.println("windowsIndex : " + windowsIndex); // 테스트용
-		// System.out.println("hIndex : " + title.nextMenu()); // 테스트용
-
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_LEFT:
 
@@ -249,6 +277,9 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			}
 			if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.UP);
+			}
+			if (windowsIndex == 3) {
+				endController.move(Direction.UP);
 			}
 			break;
 
@@ -269,6 +300,9 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			}
 			if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.DOWN);
+			}
+			if (windowsIndex == 3) {
+				endController.move(Direction.DOWN);
 			}
 			break;
 
@@ -303,6 +337,19 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 				}
 				kid.move(Direction.SELECT);
 			}
+
+			if (windowsIndex == 3) {
+				int endSel = endController.getEndSel();
+				if (endSel == 0) {
+					// restart
+					windowsIndex = 2;
+					init();
+				} else if (endSel == 1) {
+					System.exit(0);
+				} else {
+					System.out.println("Wrong Ending Selection");
+				}
+			}
 			break;
 
 		default:
@@ -327,9 +374,8 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {}
-
-	
+	public void keyTyped(KeyEvent e) {
+	}
 
 	private void gameStart() {
 		windowsIndex = 2;
