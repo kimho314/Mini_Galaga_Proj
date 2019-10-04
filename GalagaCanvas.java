@@ -75,30 +75,31 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 					}
 
 					if (windowsIndex == 2) { // 게임 시작시 작동
-
+						
+						for(Missile m : missiles)
+						{
+							m.update();
+						}
+						
 						
 						for (int i = 0; i < missiles.size(); i++) {
 							if (missiles.get(i) != null) {
 
-								missiles.get(i).update();
-
 								if (missiles.get(i).getY() < 100) {
 									missiles.remove(i);
-								} else {
+								} 
+								else {
 									if (egsCnt > 0) {
 										for (int j = 0; j < egs.length; j++) {
 											if (egs[j] != null) {
 												boolean retCrush = false;
-												
-												if(!missiles.isEmpty())
-												{
-													retCrush = egs[j].isCrush(missiles.get(i));
-												}
+												retCrush = egs[j].isCrush(missiles.get(i));
 
 												if (retCrush) {
-													System.out.println("egs : " + j + " bullet : " + i + " Hit!!!");
+													// System.out.println("egs : " + j + " bullet : " + i + " Hit!!!");
 													missiles.remove(i);
 													scDisp.scoreUp(this.score);
+													break; // 미사일이 삭제되면 바로 egs가 있는 for문을 빠져 나가도록 해야함
 												}
 											}
 										}
