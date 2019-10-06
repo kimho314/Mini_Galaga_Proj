@@ -61,7 +61,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		 *   playing init : character, missile, enemy group 
 		 */
 		settingInit();
-		plyaingInit();
+		playingInit();
 
 		new Thread(() -> { // 서브 쓰레드
 			while (true) {
@@ -220,7 +220,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		difficulty = new Difficulty();
 	}
 
-	private void plyaingInit() {
+	private void playingInit() {
 		kid = new Character();
 		missiles = Collections.synchronizedList(new ArrayList<Missile>());
 		scDisp = new ScoreDisplay();
@@ -394,7 +394,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 					// restart
 					windowsIndex = 2;
 					kidInitFlag = false;
-					plyaingInit();
+					playingInit();
 				} else if (endSel == 1) {
 					System.exit(0);
 				} else {
