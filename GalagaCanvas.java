@@ -63,12 +63,17 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		scoreTotal = 0;
 		btxMove1 = 0;
 		btxMove2 = 0;
-
-		bg = new BackGround();
-		title = new Title();
-		difficulty = new Difficulty();
-
-		init();
+		
+		
+		/*
+		 * * initialization sequence * *
+		 *             ↓
+		 *   setting init : initialize background, title, game leve
+		 *             ↓
+		 *   playing init : character, missile, enemy group 
+		 */
+		settingInit();
+		plyaingInit();
 
 		new Thread(() -> { // 서브 쓰레드
 			while (true) {
@@ -119,8 +124,8 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 										for (int j = 0; j < egs.length; j++) {
 											if (egs[j] != null) {
 												boolean retCrush = false;
+												
 												retCrush = egs[j].isCrush(missiles.get(i));
-
 												if (retCrush) {
 													missiles.remove(i);
 													scDisp.scoreUp(this.score);
@@ -133,8 +138,11 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 							}
 						}
-
-						// su - EnemyGroup 배열 egs의 update반복
+						
+						
+						
+						
+						// su - EnemyGroup 배열 egs의 move update반복
 						if (egsUpdateTimer == 0) { // 700ms
 							for (int i = 0; i < egs.length; i++) {
 
@@ -153,6 +161,10 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 							egsUpdateTimer = 100;
 						}
 						
+						
+						// EnemyGroup배열 egs의 broken update 반복
+						// 적 블럭이 총알 맞으면 터지는 이펙트 보여주고
+						// 이펙트 끝나면 삭제 및 재배열 시작
 						if (ebTimer == 0) { // 70ms
 							for (int i = 0; i < egs.length; i++) {
 								if (egs[i] != null) {
@@ -194,11 +206,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 						 */
 						if(kidBulletTimer <= 0)
 						{
-							kid.setBulletNum(0);
-							System.out.println("Reload!!!");
-							kid.reloadBullet();
-							kidBulletTimer = maxKidBulletTimer;
-
+							kidBulletTimer = 0;
 						}
 
 					} // windowsIndex ==2 end
@@ -217,7 +225,13 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		}).start();
 	}
 
-	private void init() {
+	private void settingInit() {
+		bg = new BackGround();
+		title = new Title();
+		difficulty = new Difficulty();
+	}
+
+	private void plyaingInit() {
 		kid = new Character();
 		kidTimer = 0;
 
@@ -391,6 +405,13 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 					kid.minusBulletNum();
 				}
 				
+				if(kidBulletTimer <= 0)
+				{
+					kid.setBulletNum(0);
+					System.out.println("Reload!!!");
+					kid.reloadBullet();
+					kidBulletTimer = maxKidBulletTimer;
+				}
 				
 				kid.move(Direction.SELECT);
 			}
@@ -401,7 +422,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 				if (endSel == 0) {
 					// restart
 					windowsIndex = 2;
-					init();
+					plyaingInit();
 					kidInitFlag = false;
 				} else if (endSel == 1) {
 					System.exit(0);

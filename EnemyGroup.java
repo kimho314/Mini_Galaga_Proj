@@ -66,13 +66,12 @@ public class EnemyGroup {
 	}
 	
 
-	public boolean isCrush(Missile o) {
-		
+	public boolean isCrush(Missile o) {		
 		boolean ret = false;
 
 		if ((!enemies.isEmpty()) && (o != null)) {
 			
-			int mx = o.getX() / 40;// 미사일의 x좌표를 40으로 나누어, 현재 미사일이 있는 칸 수
+			int mx = o.getX() / 40; // 미사일의 x좌표를 40으로 나누어, 현재 미사일이 있는 칸 수
 			int my = o.getY();
 			
 			for (int i = 0; i < enemies.size(); i++) {
@@ -101,25 +100,29 @@ public class EnemyGroup {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy e = enemies.get(i);
 			
+			// hp가 0인 enemy의 broken을 true로 set
 			if (e.getHp() <= 0) {
 				e.setBroken(true);
 			}
-			
+			// enemy의 broken값을 확인하면서 만약 true이면은 
+			// 부서지는 애니메이션 실행
 			e.isBroken();
 		}
 	}
 	
 	
-	public void brokenRemove()
-	{
-		for(int i=0; i<enemies.size(); i++)
-		{
-			if(enemies.get(i).getBrokenrm())
-			{
+	public void brokenRemove() {
+		for (int i = 0; i < enemies.size(); i++) {
+			// enemy의 부서지는 애니메이션이 끝났는지 확인
+			if (enemies.get(i).getBrokenrm()) {
 				enemies.remove(i);
-				for (int j = i + 1; j < enemies.size(); j++) {
-					// 제거된 배열 index부터 차례로 x좌표 한칸(40) 당기기
-					enemies.get(j).setX(enemies.get(j).getX() - 40);
+
+				// 재배열은 적 블록 갯수가 2개 이상이고 enemy group의 첫번째 블록이 아닐때만
+				if ((enemies.size() > 1) && (i != 0)) {
+					for (int j = i; j < enemies.size(); j++) {
+						// 제거된 배열 index부터 차례로 x좌표 한칸(40) 당기기
+						enemies.get(j).setX(enemies.get(j).getX() - 40);
+					}
 				}
 			}
 		}
