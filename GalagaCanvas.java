@@ -51,19 +51,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 	public GalagaCanvas() {
 		addMouseListener(this);
-		addKeyListener(this);
-
-		leftPress = false;
-		rightPress = false;
-		
-		kidInitFlag = false;
-
-		windowsIndex = 0;
-		btxMove1 = 0;
-		btxMove2 = 0;
-		
-		gameTimer = 0;
-		
+		addKeyListener(this);		
 		
 		/*
 		 * * initialization sequence * *
@@ -216,6 +204,17 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 	}
 
 	private void settingInit() {
+		leftPress = false;
+		rightPress = false;
+		
+		kidInitFlag = false;
+
+		windowsIndex = 0;
+		btxMove1 = 0;
+		btxMove2 = 0;
+		
+		gameTimer = 0;
+		
 		bg = new BackGround();
 		title = new Title();
 		difficulty = new Difficulty();
