@@ -5,13 +5,11 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
+public class GalagaCanvas extends Canvas implements KeyListener {
 
 	private Character kid; // 캐릭터를 불러옴
 	private boolean kidInitFlag;
@@ -50,7 +48,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 	
 
 	public GalagaCanvas() {
-		addMouseListener(this);
+		
 		addKeyListener(this);		
 		
 		/*
@@ -278,20 +276,6 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		g.drawImage(bufImage, 0, 0, this); // 모든 객체를 다 그린 버퍼이미지를 캔버스에 한번에 출력함
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-
-	@Override
-	public void mouseExited(MouseEvent e) {}
-
-	@Override
-	public void mousePressed(MouseEvent e) {}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
