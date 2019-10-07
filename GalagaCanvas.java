@@ -123,7 +123,6 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 										}
 									}
 								}
-
 							}
 						}
 												
@@ -179,7 +178,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 						 * 총알 개수 0개로 초기화
 						 * 그리고 총알 reload한다
 						 */
-						if(gameTimer % maxKidBulletTimer  == 0 && kid.getBulletNum() <= 0)
+						if((gameTimer % maxKidBulletTimer  == 0) && (kid.getBulletNum() <= 0))
 						{
 							System.out.println("Reload!!!");
 							kid.reloadBullet();
@@ -205,8 +204,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 
 	private void settingInit() {
 		leftPress = false;
-		rightPress = false;
-		
+		rightPress = false;		
 		kidInitFlag = false;
 
 		windowsIndex = 0;
@@ -237,7 +235,6 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 		if ((windowsIndex == 2) && (gameTimer % maxKidTimer == 0)) { // 게임 시작시에 캐릭터의 이동을 작동시킴
 			if (leftPress == true & rightPress != true) {
 				kid.move(Direction.LEFT);
-
 			}
 
 			if (leftPress != true & rightPress == true) {
@@ -305,9 +302,10 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.LEFT);
 			}
-			if (windowsIndex == 2) { // 게임중 이동키
+			else if (windowsIndex == 2) { // 게임중 이동키
 				leftPress = true;
 			}
+			else {}
 			break;
 
 		case KeyEvent.VK_UP:
@@ -315,12 +313,13 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			if (windowsIndex == 0) { // 메인화면
 				title.move(Direction.UP);
 			}
-			if (windowsIndex == 1) { // 난이도 설정창
+			else if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.UP);
 			}
-			if (windowsIndex == 3) {
+			else if (windowsIndex == 3) {
 				endController.move(Direction.UP);
 			}
+			else {}
 			break;
 
 		case KeyEvent.VK_RIGHT:
@@ -328,9 +327,10 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.RIGHT);
 			}
-			if (windowsIndex == 2) { // 게임중 이동키
+			else if (windowsIndex == 2) { // 게임중 이동키
 				rightPress = true;
 			}
+			else {}
 			break;
 
 		case KeyEvent.VK_DOWN:
@@ -338,12 +338,13 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 			if (windowsIndex == 0) { // 메인화면
 				title.move(Direction.DOWN);
 			}
-			if (windowsIndex == 1) { // 난이도 설정창
+			else if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.DOWN);
 			}
-			if (windowsIndex == 3) {
+			else if (windowsIndex == 3) {
 				endController.move(Direction.DOWN);
 			}
+			else {}
 			break;
 
 		case KeyEvent.VK_ENTER:
@@ -360,8 +361,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 				}
 				break;
 			}
-
-			if (windowsIndex == 1) { // 난이도 설정창
+			else if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.SELECT);
 				if (difficulty.gameStart != true) {
 					gameStart(); // 게임시작시 게임이 시작하게됨
@@ -369,9 +369,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 				}
 				break;
 			}
-
-			if (windowsIndex == 2) { // 공격버튼
-				
+			else if (windowsIndex == 2) { // 공격버튼				
 				// missile발사 후 캐릭터가 가지고 있는 총알 갯수 하나 차감
 				if ((kid.getBulletNum()) > 0 && (kid.getBulletNum() <= Difficulty.missileStack)) {
 					Missile m = kid.attack();
@@ -386,8 +384,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 				
 				kid.move(Direction.SELECT);
 			}
-
-			if (windowsIndex == 3) {
+			else if (windowsIndex == 3) {
 				int endSel = endController.getEndSel();
 				
 				if (endSel == 0) {
@@ -401,6 +398,7 @@ public class GalagaCanvas extends Canvas implements KeyListener, MouseListener {
 					System.out.println("Wrong Ending Selection");
 				}
 			}
+			else {}
 			break;
 
 		default:
