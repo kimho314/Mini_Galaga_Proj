@@ -24,7 +24,6 @@ public class ScoreDisplay {
 	public ScoreDisplay()
 	{
 		score = 0;
-		//score = 12345678;
 		
 		scImgWidth = 22;
 		figureIndex = new int[scLen];
@@ -62,9 +61,7 @@ public class ScoreDisplay {
 		for(int i=0; i<scLen; i++)
 		{
 			figureIndex[i] = numFigure[i];
-			//System.out.print("num[" + i + "] = " + figureIndex[i] + " ");
 		}
-		//System.out.println("");
 	}
 	
 	public void draw(Graphics g, GalagaCanvas galagaCanvas) {
@@ -88,6 +85,11 @@ public class ScoreDisplay {
 			g.drawImage(scoreImg, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, galagaCanvas);
 		}
 		
+	}
+	
+	public int getScore()
+	{
+		return score;
 	}
 	
 	public void scoreUp(int score)
