@@ -22,10 +22,8 @@ public class BackGround {
 
 	
 	public void draw(Graphics g, GalagaCanvas roleCanvas) {
-		g.drawImage(bgImg, x, y, roleCanvas);
-		
+		g.drawImage(bgImg, x, y, roleCanvas);		
 	}
-
 	
 
 }

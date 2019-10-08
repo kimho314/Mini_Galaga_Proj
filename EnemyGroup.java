@@ -7,7 +7,7 @@ import java.util.List;
 
 public class EnemyGroup {
 	private List<Enemy> enemies; // 블럭 배열 생성
-	private int ran; // 랜덤값 설정
+	private int rand; // 랜덤값 설정
 	private int vx; // 움직이는 단위
 	private int vy; // 움직이는 단위
 
@@ -22,12 +22,12 @@ public class EnemyGroup {
 	}
 
 	public EnemyGroup(int y, int speed) {
-		ran = (int) (Math.random() * 5) + 1; // 최소 1개 이상 랜덤값 설정
+		rand = (int) (Math.random() * 5) + 1; // 최소 1개 이상 랜덤값 설정
 
 		enemies = Collections.synchronizedList(new ArrayList<Enemy>());
 
 		// 동기화되는 리스트 설정
-		for (int i = 0; i < ran; i++) { // 랜덤값만큼 배열에 블럭 담아주기
+		for (int i = 0; i < rand; i++) { // 랜덤값만큼 배열에 블럭 담아주기
 			enemies.add(new Enemy(i * 40, y)); // 각 객체생성마다 초기 x좌표를 너비 40를 갯수에 곱해서 설정
 		}
 
@@ -48,7 +48,33 @@ public class EnemyGroup {
 	public int getGy() {// 그룹 y좌표 getter
 		return this.gy; // 현재 그룹 y좌표
 	}
-
+	
+	public void hpUp()
+	{
+		for(Enemy e : enemies)
+		{
+			if(e != null)
+			{
+				int eHp = e.getHp();
+				if(eHp < Integer.MAX_VALUE)
+				{
+					e.setHp(eHp++);
+				}
+			}
+		}
+	}
+	
+	public void printEnemyGroupHp()
+	{
+		for(int i=0; i<enemies.size(); i++)
+		{
+			if(enemies.get(i) != null)
+			{
+				System.out.print(" E index : " + i + " HP : " + enemies.get(i).getHp());
+			}
+		}
+	}
+	
 	public void draw(Graphics g, GalagaCanvas galagaCanvas) {
 		for (Enemy e : enemies) {
 			e.draw(g, galagaCanvas);

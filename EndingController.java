@@ -14,9 +14,10 @@ public class EndingController {
 	
 	private boolean restartFlag;
 	private int selIndex;
-	
+	private Sound overS; // sound
 	public EndingController()
 	{
+		overS = new Sound("over"); // sound
 		restartFlag = false;
 		selIndex = 0;
 		
@@ -41,14 +42,14 @@ public class EndingController {
 		
 		if(restartFlag)
 		{ 
-			g.drawImage(blueArrowImg, 179, 376 + (24 * selIndex), 190, 400 + (24 * selIndex), 0, 0, 11, 17, galagaCanvas);
-			
+			g.drawImage(blueArrowImg, 179, 376 + (24 * selIndex), 190, 400 + (24 * selIndex), 0, 0, 11, 17, galagaCanvas);			
 			g.drawImage(restartImg, 202, 376, 278, 400, 0, (24 * (1 - selIndex)), 76, 24 + (24 * (1 - selIndex)), galagaCanvas);
 			g.drawImage(btnEndImg, 190, 400, 291, 424, 0, (24 * selIndex), 101, 24 + (24 * selIndex), galagaCanvas);
 		}
 		else
 		{
 			g.drawImage(endImg, 15, 100, galagaCanvas);
+			overS.play(); // sound
 		}
 		
 	}
