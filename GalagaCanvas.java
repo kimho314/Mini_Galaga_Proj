@@ -50,7 +50,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 	private static final int maxEndingTimer = 200;
 	private static final int maxPrintRankingChartTimer = 1000;
 	
-	private Sound introS, menuS, lifeS, fireS, overS, gameS; // sound
+	private SoundManager introS, menuS, lifeS, fireS, overS, gameS; // sound
 	public GalagaCanvas() {
 		
 		addKeyListener(this);		
@@ -81,7 +81,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 					}
 
 					if (windowsIndex == 2) { // 게임 시작시 작동
-						gameS.loop(2);
+						gameS.loop(2); // sound
 						/*
 						 * 게임 시작 후 캐릭터에 
 						 * 최대 체력과 최대 총알 개수를
@@ -142,7 +142,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 										kid.minusMaxHp();
 										// sound
 										if (kid.getHp() >= 1) {
-											lifeS.play();
+											lifeS.play(); 
 										}
 									}
 
@@ -233,11 +233,11 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 		difficulty = new Difficulty();
 		
 		// sound
-		menuS = new Sound("menu");   
-		lifeS = new Sound("life");   
-		fireS = new Sound("fire");
-		gameS = new Sound("bgm");
-		introS = new Sound("intro");
+		menuS = new SoundManager("menu");   
+		lifeS = new SoundManager("life");   
+		fireS = new SoundManager("fire");
+		gameS = new SoundManager("bgm");
+		introS = new SoundManager("intro");
 		introS.play();
 	}
 
