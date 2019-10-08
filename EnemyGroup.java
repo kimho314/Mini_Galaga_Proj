@@ -49,6 +49,11 @@ public class EnemyGroup {
 		return this.gy; // 현재 그룹 y좌표
 	}
 	
+	public int getHp()
+	{
+		return enemies.get(0).getHp();
+	}
+	
 	public void hpUp()
 	{
 		for(Enemy e : enemies)

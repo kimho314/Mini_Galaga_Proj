@@ -9,13 +9,12 @@ public class Missile {
 	private int y;
 	private Image img;
 	private int atk;
-	private int stack;
+	private static final int DEFAULT_ATK = 10;
 	
 	public Missile() {
 		x = 0;
 		y = 0;
-		atk = 10;
-		stack = 0;
+		atk = DEFAULT_ATK;
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		img = tk.getImage("res/bullet.png");
 	}
@@ -30,7 +29,17 @@ public class Missile {
 	
 	public int getAtk()
 	{
-		return atk+stack;
+		return atk;
+	}
+	
+	public void increaseAtk()
+	{
+		atk++;
+	}
+	
+	public void resetAtk()
+	{
+		atk = DEFAULT_ATK;
 	}
 	
 	public void update() {

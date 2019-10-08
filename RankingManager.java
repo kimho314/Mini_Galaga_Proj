@@ -239,9 +239,9 @@ public class RankingManager {
 		
 		for(int i=0; i<data.length; i++)
 		{
-			g.drawString(data[i][0], 200, 100 + (50*i));
-			g.drawString(data[i][1], 200 + fontSize + 10, 100 + (50*i));
-			g.drawString(data[i][2], 200 + fontSize*3 + 10*3, 100 + (50*i));
+			g.drawString(data[i][0], 150, 250 + (50*i));
+			g.drawString(data[i][1], 150 + fontSize + 10, 250 + (50*i));
+			g.drawString(data[i][2], 150 + fontSize*3 + 10*3, 250 + (50*i));
 		}
 	}
 

@@ -40,8 +40,8 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 	
 	private int gameTimer;
 	
-	//private static int maxEgsMoveUpdateTimer = 100;
-	private static int maxEgsMoveUpdateTimer = 10;
+	private static int maxEgsMoveUpdateTimer = 100;
+	//private static int maxEgsMoveUpdateTimer = 10;
 	private static int maxEgsNewTimer = 1000;
 	private static final int maxEbTimer = 10;
 	
@@ -105,8 +105,9 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 						
 						for (int i = 0; i < missiles.size(); i++) {
 							if (missiles.get(i) != null) {
-
 								if (missiles.get(i).getY() < 100) {
+									// 총알 빗맞으면 공격력 10으로 초기화
+									resetMissileListAtk();
 									missiles.remove(i);
 								} 
 								else {
@@ -118,11 +119,16 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 												retCrush = egs[j].isCrush(missiles.get(i));
 												if (retCrush) {
 													missiles.remove(i);
+													// 총알이 적 블럭에 명중하면
+													// 공격력 1씩 증가
+													increaseMissileListAtk();
 													scDisp.scoreUp(this.score);
 													break; // 미사일이 삭제되면 바로 egs가 있는 for문을 빠져 나가도록 해야함
 												}
 											}
 										}
+										
+										
 									}
 								}
 							}
@@ -140,6 +146,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 										// y값 바닥에 닿을 때 null 값 주기
 										egs[i] = null;
 										kid.minusMaxHp();
+										
 										// sound
 										if (kid.getHp() >= 1) {
 											lifeS.play(); 
@@ -171,6 +178,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 							if (curEgsCnt >= maxEgsCnt) {
 								curEgsCnt = 0;
 							}
+						
 						}
 						
 						// HP가 0이 되면 종료 시퀀스 시작
@@ -255,12 +263,42 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 		rkm.loadRanking();
 	}
 	
+	public void increaseMissileListAtk()
+	{
+		System.out.println("Missile ATK UP!!!");
+		for(Missile m : missiles)
+		{
+			if(m != null)
+			{
+				m.increaseAtk();
+			}
+		}
+	}
+	
+	public void resetMissileListAtk()
+	{
+		System.out.println("Missile ATK Reset!!!");
+		for(Missile m : missiles)
+		{
+			if(m != null)
+			{
+				m.resetAtk();
+			}
+		}
+	}
+	
 	public void difficultyUp()
 	{
-		int egsCntDiff = curEgsCnt- prevEgsCnt;
-		switch(egsCntDiff)
+		int diffEgsCnt = curEgsCnt - prevEgsCnt;
+		
+		if(diffEgsCnt < 0)
 		{
-		case 1:
+			diffEgsCnt = maxEgsCnt - diffEgsCnt;
+		}
+		
+		if(diffEgsCnt == 1)
+		{
+			System.out.println("Enemy Hp up!!!");
 			for(EnemyGroup eg : egs)
 			{
 				if(eg != null)
@@ -268,25 +306,26 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 					eg.hpUp();
 				}
 			}
-			break;
 			
-		case 3:
-			if((maxEgsNewTimer >= 500) && (maxEgsNewTimer <= 1000))
+			if(curEgsCnt % 3 == 0)
 			{
-				maxEgsNewTimer--;
+				if((maxEgsNewTimer >= 500) && (maxEgsNewTimer <= 1000))
+				{
+					maxEgsNewTimer--;
+				}
 			}
-			break;
-			
-		case 5:
-			if((maxEgsMoveUpdateTimer >= 50) && (maxEgsMoveUpdateTimer <= 100))
+			else if(curEgsCnt % 5 == 0)
 			{
-				maxEgsMoveUpdateTimer--;
+				if((maxEgsMoveUpdateTimer >= 50) && (maxEgsMoveUpdateTimer <= 100))
+				{
+					maxEgsMoveUpdateTimer--;
+				}
 			}
-			break;
-			
-		default:
-			break;
-		}
+			else {}
+			System.out.println(maxEgsNewTimer + ", " + maxEgsMoveUpdateTimer);
+		}		
+		
+		prevEgsCnt = curEgsCnt;
 		
 	}
 	

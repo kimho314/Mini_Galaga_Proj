@@ -17,7 +17,7 @@ public class Title {
 	public Title() {
 		hIndex = 0;
 		btnX = 189;
-		btnY = 450;
+		btnY = 352;
 
 		tk = Toolkit.getDefaultToolkit();
 		start = tk.getImage("res/btn_start.png");
