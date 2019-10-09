@@ -11,33 +11,40 @@ public class EnemyGroup {
 	private int vx; // 움직이는 단위
 	private int vy; // 움직이는 단위
 
-	private int attackSpeed; // 움직임 스피드
 	private int gy; // 해당 그룹 y 좌표값
 
 	private boolean drecSwi; // 블럭 방향 조절키
 	private boolean xSwi; // 블럭 벽에 닿는 인식 키
+	
+	private int egTimer; // suyoung 추가
+	public static int basicTime = 60; // suyoung 추가
+	
 
-	public EnemyGroup() {
-		this(0, 1);
-	}
-
-	public EnemyGroup(int y, int speed) {
+	public EnemyGroup() {// suyoung 기본생성자로 수정
 		rand = (int) (Math.random() * 5) + 1; // 최소 1개 이상 랜덤값 설정
 
 		enemies = Collections.synchronizedList(new ArrayList<Enemy>());
 
 		// 동기화되는 리스트 설정
 		for (int i = 0; i < rand; i++) { // 랜덤값만큼 배열에 블럭 담아주기
-			enemies.add(new Enemy(i * 40, y)); // 각 객체생성마다 초기 x좌표를 너비 40를 갯수에 곱해서 설정
+			enemies.add(new Enemy(i * 40, 0)); // suyoung y를 0으로 수정
 		}
 
 		gy = enemies.get(0).getY();// 그룹 y좌표를 첫번째 블럭 y좌표로 초기설정
-		attackSpeed = speed; // 움직임 스피드 설정
 		vx = 40; // x좌표로 움직이는 단위
 		vy = 40; // y좌표로 움직이는 단위
 		xSwi = true; // 실행시 블럭 자동 x좌표 이동
+		egTimer = (enemies.size()*9)+basicTime; // suyoung 추가 
 	}
-
+	
+	public void timerUpdate() {// suyoung timerUpdate 메서드 추가
+		if(egTimer == 0) {
+			move();
+			egTimer = (enemies.size()*9)+basicTime;// timerReset();
+		}
+		egTimer--;
+	}
+	
 	public List<Enemy> getEnemyGroup() { // 블럭 배열 getter
 		if (enemies.size() > 0) {
 			return enemies;
@@ -61,10 +68,18 @@ public class EnemyGroup {
 			if(e != null)
 			{
 				int eHp = e.getHp();
+				
 				if(eHp < Integer.MAX_VALUE)
 				{
-					e.setHp(eHp++);
+					eHp++;
 				}
+				if(eHp >= Integer.MAX_VALUE)
+				{
+					eHp = Integer.MAX_VALUE;
+				}
+				
+				e.setHp(eHp);
+				System.out.println(e.getHp());
 			}
 		}
 	}
@@ -85,10 +100,6 @@ public class EnemyGroup {
 			e.draw(g, galagaCanvas);
 		}
 	}
-
-	public void moveUpdate() { // 매 프레임당 업데이트 호출		
-		move();
-	}
 	
 	
 	public void brokenUpdate() {
@@ -97,11 +108,10 @@ public class EnemyGroup {
 	}
 	
 
-	public boolean isCrush(Missile o) {		
+	public boolean isCrush(Missile o, int atk) {		
 		boolean ret = false;
 
-		if ((!enemies.isEmpty()) && (o != null)) {
-			
+		if (o != null) {			
 			int mx = o.getX() / 40; // 미사일의 x좌표를 40으로 나누어, 현재 미사일이 있는 칸 수
 			int my = o.getY();
 			
@@ -110,11 +120,12 @@ public class EnemyGroup {
 					int egX = enemies.get(0).getX() / 40;
 					int egsIndex = mx - egX;
 
-					if (egsIndex >= 0 && egsIndex < enemies.size()) {
+					if ((egsIndex >= 0) && (egsIndex < enemies.size())) {
 						int enemyHp = enemies.get(egsIndex).getHp();
-						int enemyHpSum = enemyHp - o.getAtk();
+						int enemyHpSum = enemyHp - atk;
 						
 						enemies.get(egsIndex).setHp(enemyHpSum);
+						System.out.println(enemies.get(egsIndex).getHp());
 						ret = true;
 						break;
 					}
@@ -182,17 +193,16 @@ public class EnemyGroup {
 	}
 
 	public void xmove() { // 블럭 x좌표 이동 함수
-
 		if (drecSwi) {// drecSwi값이 true일경우는 블럭이 왼쪽으로 가고 있는 경우
 
 			for (Enemy e : enemies) {
-				int dx = e.getX() - (vx * attackSpeed);// 블럭 객체들을 -vx만큼 이동
+				int dx = e.getX() - vx;// suyoung attackSpeed제거 
 				e.setX(dx);
 			}
 		} else {// drecSwi값이 false일경우는 블럭이 오른쪽으로 가고 있는 경우
 
 			for (Enemy e : enemies) {
-				int dx = e.getX() + (vx * attackSpeed);// 블럭 객체들을 vx만큼 이동
+				int dx = e.getX() + vx;// suyoung attackSpeed제거 
 				e.setX(dx);
 			}
 		}

@@ -24,7 +24,10 @@ public class Character {
 	private int imgIndex; // 캐릭터인덱스 
 	
 	private int attackSpeed;
+	private int atk;
 	private int bulletNum;
+	
+	private static final int DEFAULT_ATK = 10;
 	
 	public Character() {
 		x = 496/2;
@@ -39,6 +42,7 @@ public class Character {
 		maxHp = 0;		
 		hpI = 5;
 		
+		atk = DEFAULT_ATK;
 		attackSpeed = 0;
 		bulletNum = 0;
 		imgIndex = 3;
@@ -46,6 +50,23 @@ public class Character {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		img = tk.getImage("res/man.png");
 		hpImg = tk.getImage("res/heart.png");
+	}
+	
+	public void increaseAtk()
+	{
+		this.atk++;
+		System.out.println("increase atk " + atk);
+	}
+	
+	public void resetAtk()
+	{
+		atk = DEFAULT_ATK;
+		System.out.println("atk reset " + atk);
+	}
+	
+	public int getAtk()
+	{
+		return atk;
 	}
 	
 	public void setBulletNum(int bulletNum)

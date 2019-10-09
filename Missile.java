@@ -8,13 +8,12 @@ public class Missile {
 	private int x;
 	private int y;
 	private Image img;
-	private int atk;
-	private static final int DEFAULT_ATK = 10;
+	
 	
 	public Missile() {
 		x = 0;
 		y = 0;
-		atk = DEFAULT_ATK;
+
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		img = tk.getImage("res/bullet.png");
 	}
@@ -24,22 +23,6 @@ public class Missile {
 		this();
 		this.x = x;
 		this.y = y;
-	}
-	
-	
-	public int getAtk()
-	{
-		return atk;
-	}
-	
-	public void increaseAtk()
-	{
-		atk++;
-	}
-	
-	public void resetAtk()
-	{
-		atk = DEFAULT_ATK;
 	}
 	
 	public void update() {

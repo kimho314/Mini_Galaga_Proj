@@ -16,7 +16,9 @@ public class Enemy {
 	private int imgIdx;// 이미지 순서 index
 	private boolean broken; // broken애니 실행을 위한 스위치
 	private boolean brokenrm;// 애니가 끝나고 배열 remove실행시 필요한 스위치
-
+	
+	private final static int DEFAULT_ENEMY_HP = 10;
+	
 	public Enemy() {// 기본생성자
 		this(0, 0); // 초기화
 	}
@@ -25,7 +27,7 @@ public class Enemy {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		img = tk.getImage("res/bomb2.png");
 
-		hp = 10; // 체력 기본 10 설정
+		hp = DEFAULT_ENEMY_HP; // 체력 기본 10 설정
 
 		// 중심점을 가운데 기준, 시작점 0으로 시작하기 위해 너비반 더해줌
 		this.x = x + E_OFFSET_W;
@@ -66,7 +68,8 @@ public class Enemy {
 	public void setHp(int hp) { // 현재 hp 설정 setter
 		this.hp = hp;
 	}
-
+	
+	
 	public boolean getBrokenrm() { // brokenrm 스위치값 getter
 		return brokenrm;
 	}
