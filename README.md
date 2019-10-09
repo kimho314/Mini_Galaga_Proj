@@ -1,5 +1,8 @@
 # Mini-Galaga_Proj
-### 에이콘 웹개발자 과정 3조 미니 게임 프로젝트 
+### 에이콘 웹개발자 과정 3조 미니 게임 프로젝트  
+
+<게임 간단 설명>  
+케릭터를 좌우로 움직이면서 총을 쏴 블록들을 깨뜨리는 게임입니다.
 
 /res : image files directory  
 /sounds : music files directory  
