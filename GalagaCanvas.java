@@ -40,7 +40,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 
 	private int gameTimer;
 
-	private static int maxEgsNewTimer = 1000;
+	private static int maxEgsNewTimer = 700;
 	private static final int maxEbTimer = 10;
 
 	private static final int maxKidTimer = 15;
@@ -111,11 +111,10 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 												retCrush = egs[j].isCrush(missiles.get(i), kid.getAtk());
 												if (retCrush) {
 													missiles.remove(i);
-
+													//scDisp.scoreUp(this.score);
 													// 총알이 적 블럭에 명중하면
 													// 플레이어 공격력 1씩 증가
 													kid.increaseAtk();
-													scDisp.scoreUp(this.score);
 													break; // 미사일이 삭제되면 바로 egs가 있는 for문을 빠져 나가도록 해야함
 												}
 											}
@@ -145,14 +144,17 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 
 							}
 						}
-
+						
+						
 						// EnemyGroup배열 egs의 broken update 반복
 						// 적 블럭이 총알 맞으면 터지는 이펙트 보여주고
 						// 이펙트 끝나면 삭제 및 재배열 시작
 						if (gameTimer % maxEbTimer == 0) { // 70ms
 							for (int i = 0; i < egs.length; i++) {
 								if (egs[i] != null) {
-									egs[i].brokenUpdate();
+									//egs[i].brokenUpdate();
+									egs[i].brokenCheck();
+									egs[i].brokenRemove(scDisp, score);
 								}
 							}
 						}
@@ -258,13 +260,14 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 					eg.hpUp();
 				}
 			}
+			
 
 			if (curEgsCnt % 3 == 0) {
-				if ((maxEgsNewTimer >= 500) && (maxEgsNewTimer <= 1000)) {
+				if ((maxEgsNewTimer >= 400) && (maxEgsNewTimer <= 700)) {
 					maxEgsNewTimer--;
 				}
 			} else if (curEgsCnt % 5 == 0) {// suyoung EnemyGroup 의 타이머 basicTime로 수정
-				if ((EnemyGroup.basicTime >= 50) && (EnemyGroup.basicTime <= 100)) {
+				if ((EnemyGroup.basicTime >= 50) && (EnemyGroup.basicTime <= 60)) {
 					EnemyGroup.basicTime--;
 				}
 			} else {}
@@ -487,9 +490,9 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-	}
-
+	public void keyTyped(KeyEvent e) {}
+	
+	
 	private void gameStart() {
 		windowsIndex = 2;
 		score = 2 * difficulty.scoreMagnification(); // 게임 시작시 난이도에서 설정한 값만큼 스코어 배율을 조절함

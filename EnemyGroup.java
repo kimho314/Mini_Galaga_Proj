@@ -16,13 +16,15 @@ public class EnemyGroup {
 	private boolean drecSwi; // 블럭 방향 조절키
 	private boolean xSwi; // 블럭 벽에 닿는 인식 키
 	
+	private boolean egBrokenFlag;
+	
 	private int egTimer; // suyoung 추가
 	public static int basicTime = 60; // suyoung 추가
 	
 
 	public EnemyGroup() {// suyoung 기본생성자로 수정
 		rand = (int) (Math.random() * 5) + 1; // 최소 1개 이상 랜덤값 설정
-
+		egBrokenFlag = false;
 		enemies = Collections.synchronizedList(new ArrayList<Enemy>());
 
 		// 동기화되는 리스트 설정
@@ -62,7 +64,7 @@ public class EnemyGroup {
 	}
 	
 	public void hpUp()
-	{
+	{		
 		for(Enemy e : enemies)
 		{
 			if(e != null)
@@ -75,7 +77,7 @@ public class EnemyGroup {
 				}
 				if(eHp >= Integer.MAX_VALUE)
 				{
-					eHp = Integer.MAX_VALUE;
+				eHp = Integer.MAX_VALUE;
 				}
 				
 				e.setHp(eHp);
@@ -84,27 +86,11 @@ public class EnemyGroup {
 		}
 	}
 	
-	public void printEnemyGroupHp()
-	{
-		for(int i=0; i<enemies.size(); i++)
-		{
-			if(enemies.get(i) != null)
-			{
-				System.out.print(" E index : " + i + " HP : " + enemies.get(i).getHp());
-			}
-		}
-	}
 	
 	public void draw(Graphics g, GalagaCanvas galagaCanvas) {
 		for (Enemy e : enemies) {
 			e.draw(g, galagaCanvas);
 		}
-	}
-	
-	
-	public void brokenUpdate() {
-		brokenCheck();
-		brokenRemove();
 	}
 	
 
@@ -116,7 +102,7 @@ public class EnemyGroup {
 			int my = o.getY();
 			
 			for (int i = 0; i < enemies.size(); i++) {
-				if ((my <= this.gy + 40) && (my >= this.gy)) {
+				if ((my <= this.gy + 80) && (my >= this.gy - 80)) {
 					int egX = enemies.get(0).getX() / 40;
 					int egsIndex = mx - egX;
 
@@ -153,10 +139,13 @@ public class EnemyGroup {
 	}
 	
 	
-	public void brokenRemove() {
+	public void brokenRemove(ScoreDisplay scDisp, int score) {
 		for (int i = 0; i < enemies.size(); i++) {
 			// enemy의 부서지는 애니메이션이 끝났는지 확인
 			if (enemies.get(i).getBrokenrm()) {
+				// 여기서 스코어 업이 일어나야함
+				scDisp.scoreUp(score);
+				// 스코어 업 후에 enemies 제거
 				enemies.remove(i);
 
 				// 재배열은 적 블록 갯수가 2개 이상이고 enemy group의 첫번째 블록이 아닐때만
@@ -169,7 +158,6 @@ public class EnemyGroup {
 			}
 		}
 	}
-	
 	
 	
 	public void move() {

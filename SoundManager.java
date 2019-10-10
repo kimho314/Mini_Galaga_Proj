@@ -19,19 +19,33 @@ public class SoundManager {
 		String soundUrl = "";
 
 		switch (menu) {
-		case "intro" : soundUrl = "sound/intro.wav"; 
-					break;
-		case "menu" : soundUrl = "sound/menu.wav";
-					break;
-		case "life" : soundUrl = "sound/life.wav"; 
-					break;
-		case "fire" : soundUrl = "sound/fire.wav"; 
-					break;
-		case "over" : soundUrl = "sound/over.wav"; 
-					break;
-		case "bgm" : soundUrl = "sound/bgm.wav"; 
-					break;
-		default: soundUrl = ""; break;
+		case "intro" : 
+			soundUrl = "sound/intro.wav"; 
+			break;
+		
+		case "menu" : 
+			soundUrl = "sound/menu.wav";
+			break;
+		
+		case "life" : 
+			soundUrl = "sound/life.wav"; 
+			break;
+		
+		case "fire" : 
+			soundUrl = "sound/fire.wav"; 
+			break;
+		
+		case "over" : 
+			soundUrl = "sound/over.wav"; 
+			break;
+		
+		case "bgm" : 
+			soundUrl = "sound/bgm.wav"; 
+			break;
+		
+		default: 
+			soundUrl = ""; 
+			break;
 		}
 		
 		file = new File(soundUrl);

@@ -49,7 +49,7 @@ public class ScoreDisplay {
 		// 6 : 7th figure
 		// 7 : 8th figure
 		int[] numFigure = new int[scLen];
-		int tmpNum = this.score;
+		int tmpNum = score;
 		
 		for(int i=0; i<scLen; i++)
 		{
@@ -92,13 +92,13 @@ public class ScoreDisplay {
 		return score;
 	}
 	
-	public void scoreUp(int score)
+	public void scoreUp(int _score)
 	{
-		this.score += score;
+		score += _score;
 		
-		if(this.score >= 99999999)
+		if(score >= 99999999)
 		{
-			this.score = 99999999;
+			score = 99999999;
 		}
 	}
 	
