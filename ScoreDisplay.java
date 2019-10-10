@@ -67,15 +67,15 @@ public class ScoreDisplay {
 	public void draw(Graphics g, GalagaCanvas galagaCanvas) {
 		
 		// SCORE 이미지 출력
-		g.drawImage(scoreDisp, 10, 10, galagaCanvas);
+		g.drawImage(scoreDisp, 350, 30, galagaCanvas); // bae 수정
 		
 		// 숫자를 자릿수에 맞춰서 출력
 		for(int i=0; i<scLen; i++)
 		{
-			int dx1 = 100 + (scImgWidth * i);
-			int dy1 = 10;
-			int dx2 = 100 + (scImgWidth * (i+1));
-			int dy2 = 10 + scImgWidth;
+			int dx1 = 300 + (scImgWidth * i);// bae 수정
+			int dy1 = 60;// bae 수정
+			int dx2 = 300 + (scImgWidth * (i+1));// bae 수정
+			int dy2 = 60 + scImgWidth;// bae 수정
 			
 			int sx1 = 0 + (scImgWidth * figureIndex[i]);
 			int sy1 = 0;

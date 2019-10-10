@@ -197,7 +197,8 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 						gameTimer = 0;
 					}
 
-					Thread.sleep(7); // 약 144프레임
+					//Thread.sleep(7); // 약 144프레임
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -255,13 +256,9 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 
 		if (diffEgsCnt == 1) {
 			System.out.println("Enemy Hp up!!!");
-			for (EnemyGroup eg : egs) {
-				if (eg != null) {					
-					eg.hpUp();
-				}
-			}
+			Enemy.DEFAULT_ENEMY_HP++;
+			//System.out.println(Enemy.DEFAULT_ENEMY_HP);
 			
-
 			if (curEgsCnt % 3 == 0) {
 				if ((maxEgsNewTimer >= 400) && (maxEgsNewTimer <= 700)) {
 					maxEgsNewTimer--;

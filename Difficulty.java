@@ -88,14 +88,14 @@ public class Difficulty {
       g.drawImage(arrow, btnX - 30, btnY + (hIndex * 100), btnX - 12, btnY + 24 + (hIndex * 100), 0, 0, 11, 17,
             roleCanvas);
 
-      g.drawImage(arrowB, btnX + 170, btnY - 10, btnX + 140, btnY + 34, 0, 0, 11, 17, roleCanvas);
-      g.drawImage(arrowB, btnX + 240, btnY - 10, btnX + 270, btnY + 34, 0, 0, 11, 17, roleCanvas);
+      g.drawImage(arrowB, btnX + 170, btnY - 10, btnX + 140, btnY + 34, 0, 0, 30, 44, roleCanvas);// bae 수정
+      g.drawImage(arrowB, btnX + 240, btnY - 10, btnX + 270, btnY + 34, 0, 0, 30, 44, roleCanvas);// bae 수정
 
       g.drawImage(num, btnX + 190, btnY - 5, btnX + 220, btnY + 30, 0 + (_healthPoint * 22), 0,
             22 + (_healthPoint * 22), 19, roleCanvas);
 
-      g.drawImage(arrowB, btnX + 170, btnY + 90, btnX + 140, btnY + 134, 0, 0, 11, 17, roleCanvas);
-      g.drawImage(arrowB, btnX + 240, btnY + 90, btnX + 270, btnY + 134, 0, 0, 11, 17, roleCanvas);
+      g.drawImage(arrowB, btnX + 170, btnY + 90, btnX + 140, btnY + 134, 0, 0, 30, 44, roleCanvas);// bae 수정
+      g.drawImage(arrowB, btnX + 240, btnY + 90, btnX + 270, btnY + 134, 0, 0, 30, 44, roleCanvas);// bae 수정
 
       g.drawImage(num, btnX + 190, btnY + 95, btnX + 220, btnY + 130, 0 + (_missileStack * 22), 0,
             22 + (_missileStack * 22), 19, roleCanvas);

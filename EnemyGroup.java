@@ -63,7 +63,7 @@ public class EnemyGroup {
 		return enemies.get(0).getHp();
 	}
 	
-	public void hpUp()
+	public void hpUp(int hp_in)
 	{		
 		for(Enemy e : enemies)
 		{
@@ -80,7 +80,7 @@ public class EnemyGroup {
 				eHp = Integer.MAX_VALUE;
 				}
 				
-				e.setHp(eHp);
+				e.setHp(hp_in);
 				System.out.println(e.getHp());
 			}
 		}

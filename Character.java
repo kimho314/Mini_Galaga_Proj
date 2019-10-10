@@ -21,6 +21,7 @@ public class Character {
 
 	private Image img; // 캐릭터 이미지
 	private Image hpImg; // 하트 이미지
+	private Image BImg; // bae 추가
 	private int imgIndex; // 캐릭터인덱스 
 	
 	private int attackSpeed;
@@ -35,7 +36,7 @@ public class Character {
 		w = 40;
 		h = 36;
 		
-		hpx = 43;
+		hpx = 45; // bae 수정
 		hpy = 60;
 		hpw = 48;
 		hph = 36;
@@ -50,6 +51,7 @@ public class Character {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		img = tk.getImage("res/man.png");
 		hpImg = tk.getImage("res/heart.png");
+		BImg = tk.getImage("res/bullet2.png"); // bae 추가
 	}
 	
 	public void increaseAtk()
@@ -128,10 +130,16 @@ public class Character {
 	public void draw(Graphics g, GalagaCanvas galagaCanvas) { 
 		int sx = imgIndex * w;
 		
-		g.drawImage(img, x - 5 , y, x + w - 5, y + h, sx, 0, sx + w, h, galagaCanvas); // 캐릭터이미지 설정			
+		g.drawImage(img, x - 5 , y, x + w - 5, y + h, sx, 0, sx + w, h, galagaCanvas); // 캐릭터이미지 설정				
+		
 		for(int i=0; i<maxHp; i++)
 		{
 			g.drawImage(hpImg, hpI+hpx*i, hpy, hpI+hpx*(i+1), hpy+hph, 0, 0, hpw, hph, galagaCanvas); // 하트이미지 설정 
+		}
+		
+		for(int i=0; i<bulletNum; i++) //// bae 추가
+		{
+			g.drawImage(BImg, hpI+hpx*i, hpy-40, hpI+hpx*(i+1), hpy+hph-40, 0, 0, hpw, hph, galagaCanvas); 
 		}
 	}
 

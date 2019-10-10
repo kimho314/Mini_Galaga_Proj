@@ -37,7 +37,8 @@ public class RankingManager {
 	
 	Toolkit tk;
 	private Image rankingAlphabetImg;
-	private Image rankingNumImg;
+	private Image cursorImg;
+	private Image endImg;
 	private int drawSwitchState;
 
 	public RankingManager() {
@@ -60,8 +61,9 @@ public class RankingManager {
 		}
 		
 		tk = Toolkit.getDefaultToolkit();
-		rankingAlphabetImg = tk.getImage("res/ic_alphabet.png");
-		rankingNumImg = tk.getImage("res/ic_num.png");
+		endImg = tk.getImage("res/ending_title.png");
+		rankingAlphabetImg = tk.getImage("res/eng.png");
+		cursorImg = tk.getImage("res/ico_arr_l.png");
 		drawSwitchState = 0;
 	}
 	
@@ -216,15 +218,19 @@ public class RankingManager {
 	
 	public void drawTypeName(Graphics g, GalagaCanvas galagaCanvas)
 	{
-		g.drawImage(rankingAlphabetImg, 180, 360, 240, 400, 
+		g.drawImage(endImg, 109, 281, galagaCanvas);
+		g.drawImage(cursorImg, 190 + (ALPHABET_WIDTH * nextIdx), 360 + 160 + 40, 229 + (ALPHABET_WIDTH * nextIdx), 400 + 160 + 40, 
+				0, 0, 19, 13, galagaCanvas);
+		
+		g.drawImage(rankingAlphabetImg, 180, 360 + 160, 240, 400 + 160, 
 				0 + (ALPHABET_WIDTH * alphabetIdx[0]), 0, 
 				40 + (ALPHABET_WIDTH * alphabetIdx[0]), 40, galagaCanvas);
 		
-		g.drawImage(rankingAlphabetImg, 180 + ALPHABET_WIDTH, 360, 240 + ALPHABET_WIDTH, 400, 
+		g.drawImage(rankingAlphabetImg, 180 + ALPHABET_WIDTH, 360 + 160, 240 + ALPHABET_WIDTH, 400 + 160, 
 				0 + (ALPHABET_WIDTH * alphabetIdx[1]), 0, 
 				40 + (ALPHABET_WIDTH * alphabetIdx[1]), 40, galagaCanvas);
 		
-		g.drawImage(rankingAlphabetImg, 180 + ALPHABET_WIDTH * 2, 360, 240 + ALPHABET_WIDTH * 2, 400, 
+		g.drawImage(rankingAlphabetImg, 180 + ALPHABET_WIDTH * 2, 360 + 160, 240 + ALPHABET_WIDTH * 2, 400 + 160, 
 				0 + (ALPHABET_WIDTH * alphabetIdx[2]), 0, 
 				40 + (ALPHABET_WIDTH * alphabetIdx[2]), 40, galagaCanvas);
 	}
@@ -235,7 +241,6 @@ public class RankingManager {
 		
 		g.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
 		g.setColor(Color.white);
-		
 		
 		for(int i=0; i<data.length; i++)
 		{

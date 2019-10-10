@@ -22,7 +22,7 @@ public class EndingController {
 		selIndex = 0;
 		
 		tk = Toolkit.getDefaultToolkit();
-		endImg = tk.getImage("res/end.png");
+		endImg = tk.getImage("res/ending_title.png");
 		restartImg = tk.getImage("res/btn_restart.png");
 		btnEndImg = tk.getImage("res/btn_end.png");
 		blueArrowImg = tk.getImage("res/ico_arr.png");
@@ -48,7 +48,7 @@ public class EndingController {
 		}
 		else
 		{
-			g.drawImage(endImg, 15, 100, galagaCanvas);
+			g.drawImage(endImg, 109, 281, galagaCanvas);
 			overS.loop(); // sound
 		}
 		
