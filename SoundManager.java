@@ -7,90 +7,93 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class SoundManager {
-	private Clip clip;
-	private AudioInputStream stream;
-	private File file;
-
-	public SoundManager() {
-		this("");
-	}
-
-	public SoundManager(String menu) {
-		String soundUrl = "";
-
-		switch (menu) {
-		case "intro" : 
-			soundUrl = "sound/intro.wav"; 
-			break;
+	
+	private String[] urlArr;
+	private Sound[] sound;
+	
+	private static SoundManager sm;
+	
+	private SoundManager()
+	{
+		urlArr = new String[6];
+		urlArr[0] =  "sound/intro.wav"; 
+		urlArr[1] =  "sound/menu.wav";
+		urlArr[2] =  "sound/life.wav"; 
+		urlArr[3] =  "sound/fire.wav"; 
+		urlArr[4] =  "sound/over.wav"; 
+		urlArr[5] =  "sound/bgm.wav";
 		
-		case "menu" : 
-			soundUrl = "sound/menu.wav";
-			break;
-		
-		case "life" : 
-			soundUrl = "sound/life.wav"; 
-			break;
-		
-		case "fire" : 
-			soundUrl = "sound/fire.wav"; 
-			break;
-		
-		case "over" : 
-			soundUrl = "sound/over.wav"; 
-			break;
-		
-		case "bgm" : 
-			soundUrl = "sound/bgm.wav"; 
-			break;
-		
-		default: 
-			soundUrl = ""; 
-			break;
-		}
-		
-		file = new File(soundUrl);
-		if(file.exists()) {
-			try {  				
-				 stream = AudioSystem.getAudioInputStream(file);
-		         clip = AudioSystem.getClip();
-		         clip.open(stream);
-		        //clip.start();
-	        } catch(Exception e) {
-	            e.printStackTrace();
-	        }
+		sound = new Sound[6];
+		for(int i=0; i<sound.length; i++)
+		{
+			sound[i] = new Sound(urlArr[i]);
 		}
 	}
-
-	public void play() {
-		try { 
-			clip.setFramePosition(0);
-			clip.start();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+	
+	public static SoundManager getInstance()
+	{
+		if(sm == null)
+		{
+			sm = new SoundManager();
+		}
+		return sm;
 	}
-
-	public void loop() {
-		try { 
-			clip.loop(0);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+	
+	private int soundSelection(String sound)
+	{
+		int ret = -1;
+		
+		if(sound.equals("intro"))
+		{
+			ret = 0;
+		}
+		else if(sound.equals("menu"))
+		{
+			ret = 1;
+		}
+		else if(sound.equals("life"))
+		{
+			ret = 2;
+		}
+		else if(sound.equals("fire"))
+		{
+			ret = 3;
+		}
+		else if(sound.equals("over"))
+		{
+			ret = 4;
+		}
+		else if(sound.equals("bgm"))
+		{
+			ret = 5;
+		}
+		else 
+		{
+			System.out.println("Wrong Sound!!!");
+		}
+		
+		return ret;
 	}
-
-	public void loop(int cnt) {
-		try { 
-			clip.loop(cnt);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+	
+	
+	public void play(String sound)
+	{
+		int ret = soundSelection(sound);
+		this.sound[ret].play();
 	}
-
-	public void stop() {
-		try { 
-			clip.stop();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }	 
+	
+	public void loop(String sound) {
+		int ret = soundSelection(sound);
+		this.sound[ret].loop();
+	}
+	
+	public void loop(String sound, int cnt) {
+		int ret = soundSelection(sound);
+		this.sound[ret].loop(cnt);
+	}
+	
+	public void stop(String sound) {
+		int ret = soundSelection(sound);
+		this.sound[ret].stop();
 	}
 }

@@ -48,7 +48,6 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 	private static final int maxEndingTimer = 200;
 	private static final int maxPrintRankingChartTimer = 700;
 
-	private SoundManager introS, menuS, lifeS, fireS, overS, gameS; // sound
 
 	public GalagaCanvas() {
 		addKeyListener(this);
@@ -80,7 +79,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 					}
 
 					if (windowsIndex == 2) { // 게임 시작시 작동
-						gameS.loop(2); // sound
+						SoundManager.getInstance().loop("bgm", 2);
 						/*
 						 * 게임 시작 후 캐릭터에 최대 체력과 최대 총알 개수를 전달해 준다
 						 */
@@ -138,7 +137,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 
 									// sound
 									if (kid.getHp() >= 1) {
-										lifeS.play();
+										SoundManager.getInstance().play("life");
 									}
 								}
 
@@ -152,7 +151,6 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 						if (gameTimer % maxEbTimer == 0) { // 70ms
 							for (int i = 0; i < egs.length; i++) {
 								if (egs[i] != null) {
-									//egs[i].brokenUpdate();
 									egs[i].brokenCheck();
 									egs[i].brokenRemove(scDisp, score);
 								}
@@ -174,14 +172,13 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 						// 만약 스코어가 99999999가 되도 종료 시퀀스 시작
 						if ((kid.getHp() <= 0) || (scDisp.getScore() >= 99999999)) {
 							windowsIndex = 3;
-							gameS.stop();
+							SoundManager.getInstance().stop("bgm");
 						}
 
 						/*
 						 * bullet timer가 0이 되면 실제 남은 총알 갯수와 상관없이 총알 개수 0개로 초기화 그리고 총알 reload한다
 						 */
 						if ((gameTimer % maxKidBulletTimer == 0) && (kid.getBulletNum() <= 0)) {
-							// System.out.println("Reload!!!");
 							kid.reloadBullet();
 						}
 
@@ -222,13 +219,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 		title = new Title();
 		difficulty = new Difficulty();
 
-		// sound
-		menuS = new SoundManager("menu");
-		lifeS = new SoundManager("life");
-		fireS = new SoundManager("fire");
-		gameS = new SoundManager("bgm");
-		introS = new SoundManager("intro");
-		introS.play();
+		SoundManager.getInstance().play("intro");
 	}
 
 	private void playingInit() {
@@ -256,7 +247,6 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 		if (diffEgsCnt == 1) {
 			System.out.println("Enemy Hp up!!!");
 			Enemy.DEFAULT_ENEMY_HP++;
-			//System.out.println(Enemy.DEFAULT_ENEMY_HP);
 			
 			if (curEgsCnt % 3 == 0) {
 				if ((maxEgsNewTimer >= 400) && (maxEgsNewTimer <= 700)) {
@@ -353,7 +343,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 		case KeyEvent.VK_LEFT:
 			if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.LEFT);
-				menuS.play(); // sound
+				SoundManager.getInstance().play("menu");
 			} else if (windowsIndex == 2) { // 게임중 이동키
 				leftPress = true;
 			} else {
@@ -365,12 +355,12 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 				title.move(Direction.UP);
 			} else if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.UP);
-				menuS.play(); // sound
+				SoundManager.getInstance().play("menu");
 			} else if (windowsIndex == 4) {
 				rkm.move(Direction.UP);
 			} else if (windowsIndex == 5) {
 				endController.move(Direction.UP);
-				menuS.play(); // sound
+				SoundManager.getInstance().play("menu");
 			} else {
 			}
 			break;
@@ -378,7 +368,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 		case KeyEvent.VK_RIGHT:
 			if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.RIGHT);
-				menuS.play(); // sound
+				SoundManager.getInstance().play("menu");
 			} else if (windowsIndex == 2) { // 게임중 이동키
 				rightPress = true;
 			} else if (windowsIndex == 4) {
@@ -392,10 +382,10 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 				title.move(Direction.DOWN);
 			} else if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.DOWN);
-				menuS.play(); // sound
+				SoundManager.getInstance().play("menu");
 			} else if (windowsIndex == 5) {
 				endController.move(Direction.DOWN);
-				menuS.play(); // sound
+				SoundManager.getInstance().play("menu");
 			} else if (windowsIndex == 4) {
 				rkm.move(Direction.DOWN);
 			} else {
@@ -409,7 +399,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 					windowsIndex = 1;
 					btxMove1 = 100;
 					btxMove2 = 200;
-					introS.stop(); // sound
+					SoundManager.getInstance().stop("intro");
 					break;
 				} else // 게임종료시 게임이 꺼짐
 				{
@@ -418,7 +408,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 				break;
 			} else if (windowsIndex == 1) { // 난이도 설정창
 				difficulty.move(Direction.SELECT);
-				menuS.play(); // sound
+				SoundManager.getInstance().play("menu");
 
 				if (Difficulty.gameStart != true) {
 					gameStart(); // 게임시작시 게임이 시작하게됨
@@ -430,7 +420,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 				if ((kid.getBulletNum()) > 0 && (kid.getBulletNum() <= Difficulty.missileStack)) {
 					Missile m = kid.attack();
 					missiles.add(m);
-					fireS.play(); // sound
+					SoundManager.getInstance().play("fire");
 					kid.minusBulletNum();
 
 					if (kid.getBulletNum() <= 0) {

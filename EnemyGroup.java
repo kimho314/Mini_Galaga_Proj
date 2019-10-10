@@ -58,34 +58,16 @@ public class EnemyGroup {
 		return this.gy; // 현재 그룹 y좌표
 	}
 	
-	public int getHp()
+	public void printHp()
 	{
-		return enemies.get(0).getHp();
-	}
-	
-	public void hpUp(int hp_in)
-	{		
 		for(Enemy e : enemies)
 		{
 			if(e != null)
 			{
-				int eHp = e.getHp();
-				
-				if(eHp < Integer.MAX_VALUE)
-				{
-					eHp++;
-				}
-				if(eHp >= Integer.MAX_VALUE)
-				{
-				eHp = Integer.MAX_VALUE;
-				}
-				
-				e.setHp(hp_in);
 				System.out.println(e.getHp());
 			}
 		}
 	}
-	
 	
 	public void draw(Graphics g, GalagaCanvas galagaCanvas) {
 		for (Enemy e : enemies) {

@@ -14,10 +14,9 @@ public class EndingController {
 	
 	private boolean restartFlag;
 	private int selIndex;
-	private SoundManager overS; // sound
+	
 	public EndingController()
 	{
-		overS = new SoundManager("over"); // sound
 		restartFlag = false;
 		selIndex = 0;
 		
@@ -49,7 +48,7 @@ public class EndingController {
 		else
 		{
 			g.drawImage(endImg, 109, 281, galagaCanvas);
-			overS.loop(); // sound
+			SoundManager.getInstance().loop("over");
 		}
 		
 	}
