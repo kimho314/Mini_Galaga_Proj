@@ -64,21 +64,22 @@ public class EnemyGroup {
 	}
 	
 	public void hpUp(int hp_in)
-	{	
-		
-		if(hp_in >= Integer.MAX_VALUE)
-		{
-			hp_in = Integer.MAX_VALUE;
-		}
-		if(hp_in < 0)
-		{
-			hp_in = 0;
-		}
-		
+	{		
 		for(Enemy e : enemies)
 		{
 			if(e != null)
-			{								
+			{
+				int eHp = e.getHp();
+				
+				if(eHp < Integer.MAX_VALUE)
+				{
+					eHp++;
+				}
+				if(eHp >= Integer.MAX_VALUE)
+				{
+				eHp = Integer.MAX_VALUE;
+				}
+				
 				e.setHp(hp_in);
 				System.out.println(e.getHp());
 			}
