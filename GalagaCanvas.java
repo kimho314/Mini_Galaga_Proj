@@ -255,8 +255,12 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 
 		if (diffEgsCnt == 1) {
 			System.out.println("Enemy Hp up!!!");
-			Enemy.DEFAULT_ENEMY_HP++;
-			//System.out.println(Enemy.DEFAULT_ENEMY_HP);
+			if (curEgsCnt > 1) {
+				int tmpHp = egs[prevEgsCnt-1].getHp();
+				tmpHp++;
+				System.out.println("[" + (curEgsCnt-1) + "]" + "hp : ");
+				egs[curEgsCnt-1].hpUp(tmpHp);
+			}
 			
 			if (curEgsCnt % 3 == 0) {
 				if ((maxEgsNewTimer >= 400) && (maxEgsNewTimer <= 700)) {
