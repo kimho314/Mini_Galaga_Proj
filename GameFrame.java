@@ -1,4 +1,4 @@
-package mini_galaga;
+
 
 import java.awt.Canvas;
 import java.awt.Frame;
