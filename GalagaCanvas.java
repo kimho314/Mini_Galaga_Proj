@@ -197,8 +197,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 						gameTimer = 0;
 					}
 
-					//Thread.sleep(7); // 약 144프레임
-					Thread.sleep(1);
+					Thread.sleep(7); // 약 144프레임
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
