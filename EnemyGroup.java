@@ -75,7 +75,7 @@ public class EnemyGroup {
 			int my = o.getY();
 			
 			for (int i = 0; i < enemies.size(); i++) {
-				if ((my <= this.gy + 80) && (my >= this.gy - 80)) {
+				if ((my <= this.gy + 40) && (my >= this.gy - 80)) {
 					int egX = enemies.get(0).getX() / 40;
 					int egsIndex = mx - egX;
 
