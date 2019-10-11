@@ -248,6 +248,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 			System.out.print("Enemy Hp up!!!  ");
 			Enemy.DEFAULT_ENEMY_HP++;
 			System.out.println(Enemy.DEFAULT_ENEMY_HP);
+			
 			if (curEgsCnt % 3 == 0) {
 				if ((maxEgsNewTimer >= 400) && (maxEgsNewTimer <= 700)) {
 					maxEgsNewTimer--;
@@ -281,6 +282,9 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 
 		if (windowsIndex == 3) {
 			Enemy.DEFAULT_ENEMY_HP = 9;
+			EnemyGroup.basicTime = 60;
+			maxEgsNewTimer = 700;
+			
 			if (gameTimer % maxEndingTimer == 0) {
 				if (rkm.isScoreHigh(scDisp.getScore())) {
 					windowsIndex++;
