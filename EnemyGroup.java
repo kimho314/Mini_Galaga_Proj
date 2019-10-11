@@ -16,15 +16,12 @@ public class EnemyGroup {
 	private boolean drecSwi; // 블럭 방향 조절키
 	private boolean xSwi; // 블럭 벽에 닿는 인식 키
 	
-	private boolean egBrokenFlag;
-	
 	private int egTimer; // suyoung 추가
 	public static int basicTime = 60; // suyoung 추가
 	
 
 	public EnemyGroup() {// suyoung 기본생성자로 수정
 		rand = (int) (Math.random() * 5) + 1; // 최소 1개 이상 랜덤값 설정
-		egBrokenFlag = false;
 		enemies = Collections.synchronizedList(new ArrayList<Enemy>());
 
 		// 동기화되는 리스트 설정
@@ -47,12 +44,6 @@ public class EnemyGroup {
 		egTimer--;
 	}
 	
-	public List<Enemy> getEnemyGroup() { // 블럭 배열 getter
-		if (enemies.size() > 0) {
-			return enemies;
-		} else
-			return null;
-	}
 
 	public int getGy() {// 그룹 y좌표 getter
 		return this.gy; // 현재 그룹 y좌표

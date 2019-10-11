@@ -110,7 +110,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 												retCrush = egs[j].isCrush(missiles.get(i), kid.getAtk());
 												if (retCrush) {
 													missiles.remove(i);
-													//scDisp.scoreUp(this.score);
+		
 													// 총알이 적 블럭에 명중하면
 													// 플레이어 공격력 1씩 증가
 													kid.increaseAtk();
@@ -245,9 +245,9 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 		}
 
 		if (diffEgsCnt == 1) {
-			System.out.println("Enemy Hp up!!!");
+			System.out.print("Enemy Hp up!!!  ");
 			Enemy.DEFAULT_ENEMY_HP++;
-			
+			System.out.println(Enemy.DEFAULT_ENEMY_HP);
 			if (curEgsCnt % 3 == 0) {
 				if ((maxEgsNewTimer >= 400) && (maxEgsNewTimer <= 700)) {
 					maxEgsNewTimer--;
@@ -280,6 +280,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 		}
 
 		if (windowsIndex == 3) {
+			Enemy.DEFAULT_ENEMY_HP = 9;
 			if (gameTimer % maxEndingTimer == 0) {
 				if (rkm.isScoreHigh(scDisp.getScore())) {
 					windowsIndex++;
@@ -292,6 +293,7 @@ public class GalagaCanvas extends Canvas implements KeyListener {
 
 		if (windowsIndex == 4) {
 			int rkmDrawSwitchState = rkm.getDrawSwitchState();
+			
 			if (rkmDrawSwitchState == 1) {
 				if (gameTimer % maxPrintRankingChartTimer == 0) {
 					rkm.setDrawSwitchState(2);
